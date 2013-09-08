@@ -104,7 +104,7 @@
     }
     
     float amplitude=1;
-    
+      
 
     
     float binSize = L/fs;
