@@ -26,6 +26,8 @@
 #import "FFTBufferManager.h"
 #import "aurio_helper.h"
 
+#define ECONDER_MESSAGE @"HARS"
+
 #define SAMPLING_FREQUENCY 44100
 #define MIN_FREQ 18006
 #define MAX_FREQ 19000
@@ -34,6 +36,7 @@
 #define ENCODER_AMPLITUDE_OFF 0.0
 #define ENCODER_BINS_SIZE     4096
 #define ENCODER_PACKET_REPEAT 16
+#define ENCODER_USE_SILENCE   0
 
 #define DECODER_SAMPLE_SIZE 4096
 #define DECODER_HOP_TOLERANCE_PERCENTAGE 1.0
@@ -105,7 +108,7 @@
 //    [self setupPacketsAsEncoderOutput:packets repeating:8];
     
     
-    NSMutableArray *packets = [self packData16bitsX4:@"SEAN"];
+    NSMutableArray *packets = [self packData16bitsX4:ECONDER_MESSAGE];
     [self setupPacketsAsEncoderOutput:packets repeating:ENCODER_PACKET_REPEAT];
     
 #if TARGET_IPHONE_SIMULATOR
