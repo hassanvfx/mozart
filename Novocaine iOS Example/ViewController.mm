@@ -112,11 +112,15 @@
     [self setupPacketsAsEncoderOutput:packets repeating:ENCODER_PACKET_REPEAT];
     
 #if TARGET_IPHONE_SIMULATOR
-    [self encoderSetup];
+//    [self encoderSetup];
     
     [self decoderSetup];
 #else
     //     [self encoderSetup];
+    
+    [self encoderSetup];
+    
+//    [self decoderSetup];
 #endif
     
     
