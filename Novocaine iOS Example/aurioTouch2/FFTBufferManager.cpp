@@ -137,12 +137,12 @@ Boolean	FFTBufferManager::ComputeFFT(Float32 *outFFTData)
         
         /// GET THE MAGNITUDES
         /// 8. take the forward transform of the wave amplitude
-        magnitudes[0] = sqrtf(mDspSplitComplex.realp[0]*mDspSplitComplex.realp[0]);
+        magnitudes[0] = (mDspSplitComplex.realp[0]*mDspSplitComplex.realp[0]);
         
         
         //get magnitude;
         for(int i = 1; i < mFFTLength; i++){
-            magnitudes[i] = sqrtf(mDspSplitComplex.realp[i]*mDspSplitComplex.realp[i] + mDspSplitComplex.imagp[i] * mDspSplitComplex.imagp[i]);
+            magnitudes[i] = (mDspSplitComplex.realp[i]*mDspSplitComplex.realp[i] );
         }
 //        
 //        printf("----magnitude\n");
