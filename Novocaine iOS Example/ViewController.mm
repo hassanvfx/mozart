@@ -29,7 +29,7 @@
 #define ECONDER_MESSAGE @"HARS"
 
 #define SAMPLING_FREQUENCY 44100
-#define MIN_FREQ 18006
+#define MIN_FREQ 18000
 #define MAX_FREQ 19000
 
 #define ENCODER_AMPLITUDE_ON  1.0
@@ -112,9 +112,9 @@
     [self setupPacketsAsEncoderOutput:packets repeating:ENCODER_PACKET_REPEAT];
     
 #if TARGET_IPHONE_SIMULATOR
-//    [self encoderSetup];
+    [self encoderSetup];
     
-    [self decoderSetup];
+//    [self decoderSetup];
 #else
     //     [self encoderSetup];
     
