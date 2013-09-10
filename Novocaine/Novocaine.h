@@ -90,8 +90,8 @@ void sessionInterruptionListener(void *inClientData, UInt32 inInterruption);
 }
 #endif
 
-typedef void (^NovocaineOutputBlock)(float *data, UInt32 numFrames, UInt32 numChannels, AudioBufferList *ioData);
-typedef void (^NovocaineInputBlock)(float *data, UInt32 numFrames, UInt32 numChannels, AudioBufferList *ioData);
+typedef void (^NovocaineOutputBlock)(float *data, UInt32 numFrames, UInt32 numChannels);
+typedef void (^NovocaineInputBlock)(float *data, UInt32 numFrames, UInt32 numChannels);
 
 #if defined (USING_IOS)
 @interface Novocaine : NSObject <UIAlertViewDelegate>

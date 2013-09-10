@@ -228,7 +228,7 @@
                     [self retrieveFreshAudio:self.holdingBuffer numFrames:numSamplesPerCallback numChannels:self.numChannels];
                 
                     // Call out with the audio that we've got.
-                    self.readerBlock(self.holdingBuffer, numSamplesPerCallback, self.numChannels,NULL);
+                    self.readerBlock(self.holdingBuffer, numSamplesPerCallback, self.numChannels);
                 }
                 
                 // Asynchronously fill up the buffer (if it needs filling)

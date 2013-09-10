@@ -1,5 +1,5 @@
 // Copyright (c) 2012 Alex Wiltschko
-// 
+//
 // Permission is hereby granted, free of charge, to any person
 // obtaining a copy of this software and associated documentation
 // files (the "Software"), to deal in the Software without
@@ -8,10 +8,10 @@
 // copies of the Software, and to permit persons to whom the
 // Software is furnished to do so, subject to the following
 // conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
 // OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -55,7 +55,7 @@ static Novocaine *audioManager = nil;
 @property (nonatomic, assign, readwrite) Float64 samplingRate;
 @property (nonatomic, assign, readwrite) BOOL isInterleaved;
 @property (nonatomic, assign, readwrite) UInt32 numBytesPerSample;
-//@property (nonatomic, assign, readwrite) AudioStreamBasicDescription inputFormat;
+@property (nonatomic, assign, readwrite) AudioStreamBasicDescription inputFormat;
 @property (nonatomic, assign, readwrite) AudioStreamBasicDescription outputFormat;
 @property (nonatomic, assign, readwrite) BOOL playing;
 @property (nonatomic, assign, readwrite) float *inData;
@@ -164,7 +164,7 @@ static Novocaine *audioManager = nil;
     if (self.inputBuffer){
         
 		for(UInt32 i =0; i< self.inputBuffer->mNumberBuffers ; i++) {
-
+            
 			if(self.inputBuffer->mBuffers[i].mData){
                 free(self.inputBuffer->mBuffers[i].mData);
             }
@@ -238,7 +238,7 @@ static Novocaine *audioManager = nil;
     UInt32 sessionCategory = kAudioSessionCategory_PlayAndRecord;
     CheckError( AudioSessionSetProperty (kAudioSessionProperty_AudioCategory,
                                          sizeof (sessionCategory),
-                                         &sessionCategory), "Couldn't set audio category");    
+                                         &sessionCategory), "Couldn't set audio category");
     
     
     // Add a property listener, to listen to changes to the session
@@ -250,7 +250,7 @@ static Novocaine *audioManager = nil;
     Float32 preferredBufferSize = 0.0232;
     CheckError( AudioSessionSetProperty(kAudioSessionProperty_PreferredHardwareIOBufferDuration, sizeof(preferredBufferSize), &preferredBufferSize), "Couldn't set the preferred buffer duration");
 #endif
-
+    
     
     [self checkSessionProperties];
     
@@ -262,20 +262,35 @@ static Novocaine *audioManager = nil;
     
     // Describe the output unit.
     
-
-    AudioComponentDescription inputDescription = {0};	
+#if defined ( USING_OSX )
+    AudioComponentDescription inputDescription = {0};
+    inputDescription.componentType = kAudioUnitType_Output;
+    inputDescription.componentSubType = kAudioUnitSubType_HALOutput;
+    inputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    
+    AudioComponentDescription outputDescription = {0};
+    outputDescription.componentType = kAudioUnitType_Output;
+    outputDescription.componentSubType = kAudioUnitSubType_HALOutput;
+    outputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
+    
+#elif defined (USING_IOS)
+    AudioComponentDescription inputDescription = {0};
     inputDescription.componentType = kAudioUnitType_Output;
     inputDescription.componentSubType = kAudioUnitSubType_RemoteIO;
     inputDescription.componentManufacturer = kAudioUnitManufacturer_Apple;
     
-
+#endif
+    
     
     
     // Get component
     AudioComponent inputComponent = AudioComponentFindNext(NULL, &inputDescription);
     CheckError( AudioComponentInstanceNew(inputComponent, &_inputUnit), "Couldn't create the output audio unit");
     
-
+#if defined ( USING_OSX )
+    AudioComponent outputComponent = AudioComponentFindNext(NULL, &outputDescription);
+    CheckError( AudioComponentInstanceNew(outputComponent, &_outputUnit), "Couldn't create the output audio unit");
+#endif
     
     // Enable input
     // TODO: Conditionally disable input if option has not been specified
@@ -288,49 +303,64 @@ static Novocaine *audioManager = nil;
                                      sizeof(one)), "Couldn't enable IO on the input scope of output unit");
     
     
-
+#if defined ( USING_OSX )
+    // Disable output on the input unit
+    // (only on Mac, since on the iPhone, the input unit is also the output unit)
+    UInt32 zero = 0;
+    CheckError( AudioUnitSetProperty(_inputUnit,
+                                     kAudioOutputUnitProperty_EnableIO,
+                                     kAudioUnitScope_Output,
+                                     kOutputBus,
+                                     &zero,
+                                     sizeof(UInt32)), "Couldn't disable output on the audio unit");
+    
+    // Enable output
+    CheckError( AudioUnitSetProperty(_outputUnit,
+                                     kAudioOutputUnitProperty_EnableIO,
+                                     kAudioUnitScope_Output,
+                                     kOutputBus,
+                                     &one,
+                                     sizeof(one)), "Couldn't enable IO on the input scope of output unit");
+    
+    // Disable input
+    CheckError( AudioUnitSetProperty(_outputUnit,
+                                     kAudioOutputUnitProperty_EnableIO,
+                                     kAudioUnitScope_Input,
+                                     kInputBus,
+                                     &zero,
+                                     sizeof(UInt32)), "Couldn't disable output on the audio unit");
+    
+#endif
     
     // TODO: first query the hardware for desired stream descriptions
     // Check the input stream format
     
-
+# if defined ( USING_IOS )
     UInt32 size;
-//	size = sizeof( AudioStreamBasicDescription );
-//	CheckError( AudioUnitGetProperty(_inputUnit,
-//                                     kAudioUnitProperty_StreamFormat, 
-//                                     kAudioUnitScope_Input, 
-//                                     1, 
-//                                     &_inputFormat,
-//                                     &size ),
-//               "Couldn't get the hardware input stream format");
+	size = sizeof( AudioStreamBasicDescription );
+	CheckError( AudioUnitGetProperty(_inputUnit,
+                                     kAudioUnitProperty_StreamFormat,
+                                     kAudioUnitScope_Input,
+                                     1,
+                                     &_inputFormat,
+                                     &size ),
+               "Couldn't get the hardware input stream format");
 	
 	// Check the output stream format
 	size = sizeof( AudioStreamBasicDescription );
 	CheckError( AudioUnitGetProperty(_inputUnit,
-                                     kAudioUnitProperty_StreamFormat, 
-                                     kAudioUnitScope_Output, 
-                                     1, 
+                                     kAudioUnitProperty_StreamFormat,
+                                     kAudioUnitScope_Output,
+                                     1,
                                      &_outputFormat,
-                                     &size ), 
+                                     &size ),
                "Couldn't get the hardware output stream format");
     
     // TODO: check this works on iOS!
-    
+    _inputFormat.mSampleRate = 44100.0;
     _outputFormat.mSampleRate = 44100.0;
-    _outputFormat.mFormatID = kAudioFormatLinearPCM;
-    _outputFormat.mFormatFlags = kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat | kAudioFormatFlagIsNonInterleaved;
-    _outputFormat.mBytesPerPacket = 4;
-    _outputFormat.mFramesPerPacket = 1;
-    _outputFormat.mBytesPerFrame = 4;
-    _outputFormat.mChannelsPerFrame = 2;
-    _outputFormat.mBitsPerChannel = 32;
- 
-    
-//    _outputFormat.mFormatFlags=kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked | kAudioFormatFlagIsFloat | kAudioFormatFlagIsNonInterleaved;
-    
-  
-    self.samplingRate = _outputFormat.mSampleRate;
-    self.numBytesPerSample = 2;
+    self.samplingRate = _inputFormat.mSampleRate;
+    self.numBytesPerSample = _inputFormat.mBitsPerChannel / 8;
     
     size = sizeof(AudioStreamBasicDescription);
 	CheckError(AudioUnitSetProperty(_inputUnit,
@@ -342,24 +372,121 @@ static Novocaine *audioManager = nil;
 			   "Couldn't set the ASBD on the audio unit (after setting its sampling rate)");
     
     
-
+# elif defined ( USING_OSX )
+    
+    UInt32 size = sizeof(AudioDeviceID);
+    if(self.defaultInputDeviceID == kAudioDeviceUnknown)
+    {
+        AudioObjectPropertyAddress propertyAddress;
+        propertyAddress.mSelector = kAudioHardwarePropertyDefaultInputDevice;
+        propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
+        propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+        
+        AudioDeviceID thisDeviceID;
+        UInt32 propsize = sizeof(AudioDeviceID);
+        CheckError(AudioObjectGetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, NULL, &propsize, &thisDeviceID), "Could not get the default device");
+        self.defaultInputDeviceID = thisDeviceID;
+    }
+    
+    if (self.defaultOutputDeviceID == kAudioDeviceUnknown)
+    {
+        AudioObjectPropertyAddress propertyAddress;
+        propertyAddress.mSelector = kAudioHardwarePropertyDefaultOutputDevice;
+        propertyAddress.mScope = kAudioObjectPropertyScopeGlobal;
+        propertyAddress.mElement = kAudioObjectPropertyElementMaster;
+        
+        AudioDeviceID thisDeviceID;
+        UInt32 propsize = sizeof(AudioDeviceID);
+        CheckError(AudioObjectGetPropertyData(kAudioObjectSystemObject, &propertyAddress, 0, NULL, &propsize, &thisDeviceID), "Could not get the default device");
+        self.defaultOutputDeviceID = thisDeviceID;
+        
+    }
+    
+    
+    // Set the current device to the default input unit.
+    CheckError( AudioUnitSetProperty( _inputUnit,
+                                     kAudioOutputUnitProperty_CurrentDevice,
+                                     kAudioUnitScope_Global,
+                                     kOutputBus,
+                                     &_defaultInputDeviceID,
+                                     sizeof(AudioDeviceID) ), "Couldn't set the current input audio device");
+    
+    CheckError( AudioUnitSetProperty( _outputUnit,
+                                     kAudioOutputUnitProperty_CurrentDevice,
+                                     kAudioUnitScope_Global,
+                                     kOutputBus,
+                                     &_defaultOutputDeviceID,
+                                     sizeof(AudioDeviceID) ), "Couldn't set the current output audio device");
+    
+    
+	UInt32 propertySize = sizeof(AudioStreamBasicDescription);
+	CheckError(AudioUnitGetProperty(_inputUnit,
+									kAudioUnitProperty_StreamFormat,
+									kAudioUnitScope_Output,
+									kInputBus,
+									&_outputFormat,
+									&propertySize),
+			   "Couldn't get ASBD from input unit");
+    
+    
+	// 9/6/10 - check the input device's stream format
+	CheckError(AudioUnitGetProperty(_inputUnit,
+									kAudioUnitProperty_StreamFormat,
+									kAudioUnitScope_Input,
+									kInputBus,
+									&_inputFormat,
+									&propertySize),
+			   "Couldn't get ASBD from input unit");
+    
+    
+    _outputFormat.mSampleRate = _inputFormat.mSampleRate;
+    //    outputFormat.mFormatFlags =  kAudioFormatFlagsCanonical;
+    self.samplingRate = _inputFormat.mSampleRate;
+    self.numBytesPerSample = _inputFormat.mBitsPerChannel / 8;
+    
+    self.numInputChannels = _inputFormat.mChannelsPerFrame;
+    self.numOutputChannels = _outputFormat.mChannelsPerFrame;
+    
+    propertySize = sizeof(AudioStreamBasicDescription);
+	CheckError(AudioUnitSetProperty(_inputUnit,
+									kAudioUnitProperty_StreamFormat,
+									kAudioUnitScope_Output,
+									kInputBus,
+									&_outputFormat,
+									propertySize),
+			   "Couldn't set the ASBD on the audio unit (after setting its sampling rate)");
+    
+    
+#endif
     
     
     
-
+#if defined ( USING_IOS )
     UInt32 numFramesPerBuffer;
     size = sizeof(UInt32);
     CheckError(AudioUnitGetProperty(_inputUnit,
                                     kAudioUnitProperty_MaximumFramesPerSlice,
-                                    kAudioUnitScope_Global, 
-                                    kOutputBus, 
-                                    &numFramesPerBuffer, 
-                                    &size), 
+                                    kAudioUnitScope_Global,
+                                    kOutputBus,
+                                    &numFramesPerBuffer,
+                                    &size),
                "Couldn't get the number of frames per callback");
     
     UInt32 bufferSizeBytes = _outputFormat.mBytesPerFrame * _outputFormat.mFramesPerPacket * numFramesPerBuffer;
     
-
+#elif defined ( USING_OSX )
+	// Get the size of the IO buffer(s)
+	UInt32 bufferSizeFrames = 0;
+	size = sizeof(UInt32);
+	CheckError (AudioUnitGetProperty(self.inputUnit,
+									 kAudioDevicePropertyBufferFrameSize,
+									 kAudioUnitScope_Global,
+									 0,
+									 &bufferSizeFrames,
+									 &size),
+				"Couldn't get buffer frame size from input unit");
+	UInt32 bufferSizeBytes = bufferSizeFrames * sizeof(Float32);
+#endif
     
     
     
@@ -409,30 +536,41 @@ static Novocaine *audioManager = nil;
     callbackStruct.inputProcRefCon = (__bridge void *)(self);
     
     CheckError( AudioUnitSetProperty(_inputUnit,
-                                     kAudioOutputUnitProperty_SetInputCallback, 
+                                     kAudioOutputUnitProperty_SetInputCallback,
                                      kAudioUnitScope_Global,
-                                     0, 
-                                     &callbackStruct, 
+                                     0,
+                                     &callbackStruct,
                                      sizeof(callbackStruct)), "Couldn't set the callback on the input unit");
     
     
     callbackStruct.inputProc = renderCallback;
     callbackStruct.inputProcRefCon = (__bridge void *)(self);
-
-    CheckError( AudioUnitSetProperty(_inputUnit,
-                                     kAudioUnitProperty_SetRenderCallback, 
+# if defined ( USING_OSX )
+    CheckError( AudioUnitSetProperty(_outputUnit,
+                                     kAudioUnitProperty_SetRenderCallback,
                                      kAudioUnitScope_Input,
                                      0,
-                                     &callbackStruct, 
-                                     sizeof(callbackStruct)), 
-               "Couldn't set the render callback on the input unit");    
-
+                                     &callbackStruct,
+                                     sizeof(callbackStruct)),
+               "Couldn't set the render callback on the input unit");
+    
+#elif defined ( USING_IOS )
+    CheckError( AudioUnitSetProperty(_inputUnit,
+                                     kAudioUnitProperty_SetRenderCallback,
+                                     kAudioUnitScope_Input,
+                                     0,
+                                     &callbackStruct,
+                                     sizeof(callbackStruct)),
+               "Couldn't set the render callback on the input unit");
+#endif
     
     
     
     
 	CheckError(AudioUnitInitialize(_inputUnit), "Couldn't initialize the output unit");
-
+#if defined ( USING_OSX )
+    CheckError(AudioUnitInitialize(_outputUnit), "Couldn't initialize the output unit");
+#endif
     
 }
 
@@ -478,7 +616,7 @@ static Novocaine *audioManager = nil;
         nameBufSize = sizeof(deviceNameBuffer);
         
         CheckError( AudioObjectGetPropertyData(self.deviceIDs[i], &deviceAddress, 0, NULL, &nameBufSize, deviceNameBuffer), "Could not get device name");
-
+        
         deviceAddress.mSelector = kAudioDevicePropertyDeviceManufacturer;
         deviceAddress.mScope = kAudioObjectPropertyScopeGlobal;
         deviceAddress.mElement = kAudioObjectPropertyElementMaster;
@@ -516,8 +654,8 @@ static Novocaine *audioManager = nil;
     
 #if defined ( USING_IOS )
     UInt32 size = sizeof(isInputAvailable);
-	CheckError( AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, 
-                                        &size, 
+	CheckError( AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable,
+                                        &size,
                                         &isInputAvailable), "Couldn't check if input was available");
     
 #elif defined ( USING_OSX )
@@ -552,16 +690,16 @@ OSStatus inputCallback   (void						*inRefCon,
                           AudioBufferList			* ioData)
 {
     @autoreleasepool {
-    
+        
         Novocaine *sm = (__bridge Novocaine *)inRefCon;
         
         if (!sm.playing)
             return noErr;
         if (sm.inputBlock == nil)
-            return noErr;    
+            return noErr;
         
         
-        // Check the current number of channels		
+        // Check the current number of channels
         // Let's actually grab the audio
 #if TARGET_IPHONE_SIMULATOR
         // this is a workaround for an issue with core audio on the simulator, //
@@ -573,19 +711,19 @@ OSStatus inputCallback   (void						*inRefCon,
         
         
         // Convert the audio in something manageable
-        // For Float32s ... 
+        // For Float32s ...
         if ( sm.numBytesPerSample == 4 ) // then we've already got flaots
         {
             
             float zero = 0.0f;
             if ( ! sm.isInterleaved ) { // if the data is in separate buffers, make it interleaved
                 for (int i=0; i < sm.numInputChannels; ++i) {
-                    vDSP_vsadd((float *)sm.inputBuffer->mBuffers[i].mData, 1, &zero, sm.inData+i, 
+                    vDSP_vsadd((float *)sm.inputBuffer->mBuffers[i].mData, 1, &zero, sm.inData+i,
                                sm.numInputChannels, inNumberFrames);
                 }
-            } 
+            }
             else { // if the data is already interleaved, copy it all in one happy block.
-                // TODO: check mDataByteSize is proper 
+                // TODO: check mDataByteSize is proper
                 memcpy(sm.inData, (float *)sm.inputBuffer->mBuffers[0].mData, sm.inputBuffer->mBuffers[0].mDataByteSize);
             }
         }
@@ -596,7 +734,7 @@ OSStatus inputCallback   (void						*inRefCon,
             if ( ! sm.isInterleaved ) {
                 for (int i=0; i < sm.numInputChannels; ++i) {
                     vDSP_vflt16((SInt16 *)sm.inputBuffer->mBuffers[i].mData, 1, sm.inData+i, sm.numInputChannels, inNumberFrames);
-                }            
+                }
             }
             else {
                 vDSP_vflt16((SInt16 *)sm.inputBuffer->mBuffers[0].mData, 1, sm.inData, 1, inNumberFrames*sm.numInputChannels);
@@ -606,8 +744,8 @@ OSStatus inputCallback   (void						*inRefCon,
             vDSP_vsmul(sm.inData, 1, &scale, sm.inData, 1, inNumberFrames*sm.numInputChannels);
         }
         
-        // Now do the processing! 
-        sm.inputBlock(sm.inData, inNumberFrames, sm.numInputChannels,sm.inputBuffer);
+        // Now do the processing!
+        sm.inputBlock(sm.inData, inNumberFrames, sm.numInputChannels);
         
     }
     
@@ -641,7 +779,7 @@ OSStatus renderCallback (void						*inRefCon,
         
         
         // Collect data to render from the callbacks
-        sm.outputBlock(sm.outData, inNumberFrames, sm.numOutputChannels,ioData);
+        sm.outputBlock(sm.outData, inNumberFrames, sm.numOutputChannels);
         
         
         // Put the rendered data into the output buffer
@@ -674,10 +812,10 @@ OSStatus renderCallback (void						*inRefCon,
             
         }
     }
-
+    
     return noErr;
     
-}	
+}
 
 #pragma mark - Audio Session Listeners
 #if defined (USING_IOS)
@@ -715,8 +853,8 @@ void sessionPropertyListener(void *                  inClientData,
     //          Possibly there's a different property ID change?
     UInt32 isInputAvailable = 0;
     UInt32 size = sizeof(isInputAvailable);
-    CheckError( AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable, 
-                                        &size, 
+    CheckError( AudioSessionGetProperty(kAudioSessionProperty_AudioInputAvailable,
+                                        &size,
                                         &isInputAvailable), "Couldn't check if input is available");
     self.inputAvailable = (BOOL)isInputAvailable;
     NSLog(@"Input available? %d", self.inputAvailable);
@@ -726,7 +864,7 @@ void sessionPropertyListener(void *                  inClientData,
 
 // To be run ONCE per session property change and once on initialization.
 - (void)checkSessionProperties
-{	
+{
     
     // Check if there is input, and from where
     [self checkAudioSource];
@@ -767,7 +905,7 @@ void sessionInterruptionListener(void *inClientData, UInt32 inInterruption) {
 		sm.inputAvailable = NO;
 	}
 	else if (inInterruption == kAudioSessionEndInterruption) {
-		NSLog(@"End interuption");	
+		NSLog(@"End interuption");
 		sm.inputAvailable = YES;
 		[sm play];
 	}

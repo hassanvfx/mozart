@@ -29,8 +29,8 @@
 #define ECONDER_MESSAGE @"HARS"
 
 #define SAMPLING_FREQUENCY 44100
-#define MIN_FREQ 18000
-#define MAX_FREQ 19000
+#define MIN_FREQ 18400
+#define MAX_FREQ MIN_FREQ + 2048
 
 #define ENCODER_AMPLITUDE_ON  1.0
 #define ENCODER_AMPLITUDE_OFF 0.0
@@ -42,12 +42,12 @@
 #define DECODER_HOP_TOLERANCE_PERCENTAGE 1.0
 
 
-#define TEST_PATTERN_1111 0
+#define TEST_PATTERN_1111 1
 #define TEST_PATTERN_0101 0
 #define TEST_PATTERN_1010 0
 #define TEST_PATTERN_1001 0
 #define TEST_PATTERN_0110 0
-
+#define TEST_PATTERN_SAMPLES 16
 
 #define BIT_SET(a,b) ((a) |= (1<<(b)))
 #define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
@@ -114,17 +114,17 @@
 #if TARGET_IPHONE_SIMULATOR
     [self encoderSetup];
     
-//    [self decoderSetup];
+    [self decoderSetup];
 #else
     //     [self encoderSetup];
     
     [self encoderSetup];
     
-//    [self decoderSetup];
+    [self decoderSetup];
 #endif
     
-    
     // START IT UP YO
+    [self.audioManager setForceOutputToSpeaker:YES];
     [self.audioManager play];
     
 }
@@ -183,17 +183,17 @@
     self.encoderStream = result;
     self.encoderStreamLength =totalsamples;
     
-   
-    
-//    float *encodedWaveForm=[self encodeDataToWave:1 length:16];
-//    NSData *waveForm2=[NSData dataWithBytes:encodedWaveForm length:2048*sizeof(float)];
-//    float *waveBytes2 = new float[2048];
-//    [waveForm2 getBytes:waveBytes2];
-//    
-//    //self.encoderStream = [self encodeDataToWave32:1];
-//    self.encoderStream = encodedWaveForm;
-//     self.encoderStreamLength =self.encoderWaveLength;
 
+#if TEST_PATTERN_1111 || TEST_PATTERN_0101 ||  TEST_PATTERN_1010 || TEST_PATTERN_1001 || TEST_PATTERN_0110
+    //use a single testpattern
+    
+    float *encodedWaveForm=[self encodeDataToWave:1 length:TEST_PATTERN_SAMPLES];
+    
+    //self.encoderStream = [self encodeDataToWave32:1];
+    self.encoderStream = encodedWaveForm;
+     self.encoderStreamLength =self.encoderWaveLength;
+#endif
+    
 }
 
 #pragma mark 32bytes
@@ -873,7 +873,9 @@
         if(appendHints){
             NSMutableDictionary *hint = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                          [NSNumber numberWithInt:freq],@"frequency",
-                                         @0,@"magnitude",
+                                         @0,@"max",
+                                         @1000000000,@"min",
+                                         @0,@"avg",
                                          nil];
             [ self.frequencyHints addObject:hint];
         }
@@ -892,10 +894,10 @@
         amplitude =ENCODER_AMPLITUDE_OFF;
         
 #elif   TEST_PATTERN_0101
-        amplitude = i%2==0? ENCODER_AMPLITUDE_ON ? ENCODER_AMPLITUDE_OFF;
+        amplitude = (i%2)==0? ENCODER_AMPLITUDE_ON : ENCODER_AMPLITUDE_OFF;
         
 #elif   TEST_PATTERN_1010
-        amplitude = i%2!=0? ENCODER_AMPLITUDE_ON ? ENCODER_AMPLITUDE_OFF;
+        amplitude = (i%2)!=0? ENCODER_AMPLITUDE_ON : ENCODER_AMPLITUDE_OFF;
         
 #elif   TEST_PATTERN_1001
         amplitude = (i==0)||(i==dataSamples)? ENCODER_AMPLITUDE_ON ? ENCODER_AMPLITUDE_OFF;
@@ -979,26 +981,26 @@
 
 -(void)encoderSetup{
     __weak ViewController * wself = self;
-//
-//    
-//    __block long counter =0;
-//    
-//    [self.audioManager setOutputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels,AudioBufferList *ioData)
-//     {
-//         
-//         //         float samplingRate = wself.audioManager.samplingRate;
-//         for (int i=0; i < numFrames; ++i)
-//         {
-//             for (int iChannel = 0; iChannel < numChannels; ++iChannel)
-//             {
-//                 int index = counter%(wself.encoderStreamLength);
-//                 float val = wself.encoderStream[index];
-//                 //                 NSLog(@"%d %f",index,val);
-//                 data[i*numChannels + iChannel] = val;
-//             }
-//             counter++;
-//         }
-//     }];
+
+    
+    __block long counter =0;
+    
+    [self.audioManager setOutputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
+     {
+         
+         //         float samplingRate = wself.audioManager.samplingRate;
+         for (int i=0; i < numFrames; ++i)
+         {
+             for (int iChannel = 0; iChannel < numChannels; ++iChannel)
+             {
+                 int index = counter%(wself.encoderStreamLength);
+                 float val = wself.encoderStream[index];
+                 //                 NSLog(@"%d %f",index,val);
+                 data[i*numChannels + iChannel] = val;
+             }
+             counter++;
+         }
+     }];
     
     
     // SIGNAL GENERATOR!
@@ -1021,22 +1023,22 @@
 //     }];
     
     
-        NSURL *inputFileURL = [[NSBundle mainBundle] URLForResource:@"TLC" withExtension:@"mp3"];
-    
-            self.fileReader = [[AudioFileReader alloc]
-                               initWithAudioFileURL:inputFileURL
-                               samplingRate:self.audioManager.samplingRate
-                               numChannels:self.audioManager.numOutputChannels];
-    
-        [self.fileReader play];
-        self.fileReader.currentTime = 30.0;
-    
-    
-        [self.audioManager setOutputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels,AudioBufferList *list)
-         {
-             [wself.fileReader retrieveFreshAudio:data numFrames:numFrames numChannels:numChannels];
-             NSLog(@"Time: %f", wself.fileReader.currentTime);
-         }];
+//        NSURL *inputFileURL = [[NSBundle mainBundle] URLForResource:@"TLC" withExtension:@"mp3"];
+//    
+//            self.fileReader = [[AudioFileReader alloc]
+//                               initWithAudioFileURL:inputFileURL
+//                               samplingRate:self.audioManager.samplingRate
+//                               numChannels:self.audioManager.numOutputChannels];
+//    
+//        [self.fileReader play];
+//        self.fileReader.currentTime = 30.0;
+//    
+//    
+//        [self.audioManager setOutputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
+//         {
+//             [wself.fileReader retrieveFreshAudio:data numFrames:numFrames numChannels:numChannels];
+//             NSLog(@"Time: %f", wself.fileReader.currentTime);
+//         }];
 }
 
 -(void)decoderSetup{
@@ -1056,7 +1058,7 @@
     self.decoderInvalids=0;
 
     
-    [self.audioManager setInputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels, AudioBufferList *ioData)
+    [self.audioManager setInputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
      {
          
          // Remove DC component
@@ -1066,7 +1068,21 @@
          
          
          if (wself.fftBufferManager->NeedsNewAudioData()){
-             wself.fftBufferManager->GrabAudioData(ioData);
+             
+             //data is interleaved so only take half the data
+             Float32 *singleChannel = new Float32[numFrames];
+             
+       
+             for (int i=0; i<numFrames; i++) {
+                 singleChannel[i] = data[i*2];
+             }
+             
+             
+             wself.fftBufferManager->GrabAudioDataFloat32(data, numFrames);
+             
+             free(singleChannel);
+             
+//             wself.fftBufferManager->GrabAudioData(ioData);
              
              //             printf("grabbing data<<-------------------------\n");
          }
@@ -1101,7 +1117,10 @@
                  
                  NSMutableDictionary *hint = [wself.frequencyHints objectAtIndex:i];
                  NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
-                 float lastMax =[[hint objectForKey:@"magnitude"]floatValue];
+                 
+                 float lastMax =[[hint objectForKey:@"max"]floatValue];
+                 float lastMin =[[hint objectForKey:@"min"]floatValue];
+                 float lastAvg =[[hint objectForKey:@"avg"]floatValue];
                  
                  int frequency = [frequencyValue intValue];
                  int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
@@ -1110,42 +1129,52 @@
                  int binStarts = binWidth*freqWindowBeginsAt;
                  int binEnds = binWidth*freqWindowEndsAt;
                  
-                 float max =0;
-                 
+                 float max =lastMax;
+                 float min = lastMin;
+                 float avg=0;
+            
+                 float avgInner = 0;
                  for (int i=binStarts; i<=binEnds; i++) {
                      
                      float magnitude =wself.fftData[i];
+                     magnitude=(magnitude)*1024;
                      //                     max+=magnitude;
                      if(magnitude>max){
                          max=magnitude;
                      }
+                     
+                     if(magnitude<min){
+                         min=magnitude;
+                     }
+                     
+//                     float va =magnitude * (1.0/ ( binEnds-binStarts));
+                     avgInner=max;
                  }
                  
-//                 max = lastMax*0.6 + max*0.4;
-                 [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
+//                 avg=(lastAvg+avgInner)/2.0;
+                 
+                 avg = lastAvg*0.6 + avgInner*0.4;
+                 max = lastMax*0.5 + max*0.5;
+                 min = lastMin*0.5 + min*0.5;
+                 [hint setObject:[NSNumber numberWithFloat:max] forKey:@"max"];
+                 [hint setObject:[NSNumber numberWithFloat:min] forKey:@"min"];
+                 [hint setObject:[NSNumber numberWithFloat:avg] forKey:@"avg"];
                  
                  float maxref=1.0;
                  
-//                 if(i> [wself.frequencyHints count]-16){
-//                     maxref=0.05;
-//                 }
-//                 
-//                 if(i> [wself.frequencyHints count]-8){
-//                     maxref=0.01;
-//                 }
                  
                  
                  
-                 if(max> maxref){
+                 if(avg> maxref){
                       BIT_SET(packet, i);
                      
                      [result appendString:@"1"];
-                     printf("(%d -%d) (%d -%d) %d peak> %f [1]\n",binStarts,binEnds,freqWindowBeginsAt,freqWindowEndsAt,frequency, max);
+                     printf("(%d -%d) (%d -%d) %d peak> %f [1]\t %f \t%f \t%f\n",binStarts,binEnds,freqWindowBeginsAt,freqWindowEndsAt,frequency, avgInner, max,avg,min);
                  }else{
                      
                      BIT_CLEAR(packet, i);
                      [result appendString:@"0"];
-                     printf("(%d -%d) (%d -%d) %d off > %f [0]\n",binStarts,binEnds,freqWindowBeginsAt,freqWindowEndsAt,frequency,max);
+                     printf("(%d -%d) (%d -%d) %d off > %f [0]\t %f \t%f \t%f\n",binStarts,binEnds,freqWindowBeginsAt,freqWindowEndsAt,frequency, avgInner, max,avg,min);
                  }
 
                  //32 bytes

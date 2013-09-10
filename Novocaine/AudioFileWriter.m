@@ -179,7 +179,7 @@ static pthread_mutex_t outputAudioFileLock;
             
             if (self.writerBlock) {                
                 // Call out with the audio that we've got.
-                self.writerBlock(self.outputBuffer, numSamplesPerCallback, self.numChannels,NULL    );
+                self.writerBlock(self.outputBuffer, numSamplesPerCallback, self.numChannels    );
                 
                 // Get audio from the block supplier
                 [self writeNewAudio:self.outputBuffer numFrames:numSamplesPerCallback numChannels:self.numChannels];
