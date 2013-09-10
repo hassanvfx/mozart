@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4607981E17DFBC4C003CEA3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */; };
 		466A328217DBD49E002766DD /* aurio_helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327717DBD49E002766DD /* aurio_helper.cpp */; };
 		466A328317DBD49E002766DD /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327B17DBD49E002766DD /* CADebugMacros.cpp */; };
 		466A328417DBD49E002766DD /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327E17DBD49E002766DD /* CAStreamBasicDescription.cpp */; };
@@ -49,6 +50,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		466A327717DBD49E002766DD /* aurio_helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aurio_helper.cpp; sourceTree = "<group>"; };
 		466A327817DBD49E002766DD /* aurio_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aurio_helper.h; sourceTree = "<group>"; };
 		466A327A17DBD49E002766DD /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4607981E17DFBC4C003CEA3E /* MediaPlayer.framework in Frameworks */,
 				9AE2143E1768D0C60068A4DC /* AVFoundation.framework in Frameworks */,
 				FA5526EF152A6466003D9601 /* Accelerate.framework in Frameworks */,
 				FA5526F0152A6466003D9601 /* AudioToolbox.framework in Frameworks */,
@@ -173,6 +176,7 @@
 		FA552628152A63A4003D9601 = {
 			isa = PBXGroup;
 			children = (
+				4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */,
 				466A327617DBD49E002766DD /* aurioTouch2 */,
 				FA552694152A63F6003D9601 /* Novocaine */,
 				FA55267F152A63B6003D9601 /* Novocaine Mac Example */,

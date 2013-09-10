@@ -191,6 +191,10 @@ static Novocaine *audioManager = nil;
     UInt32 value = forceOutputToSpeaker ? 1 : 0;
     // should not be fatal error
     OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(UInt32), &value);
+    
+    float value2 = 1.0f;
+    AudioSessionSetProperty(kAudioSessionProperty_CurrentHardwareOutputVolume, sizeof(float), &value2);
+    
     if (err != noErr){
         NSLog(@"Could not override audio output route to speaker");
     }
