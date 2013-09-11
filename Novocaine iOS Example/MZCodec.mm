@@ -147,13 +147,13 @@
     
     self.parameters.MIN_FREQ            =   18000;
     self.parameters.MAX_FREQ            =   20300;
-    self.parameters.ENCODER_PACKET_REPEAT = 64;
+    self.parameters.ENCODER_PACKET_REPEAT = 64; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = 4.0;
     self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
     self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
     self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.75;
-    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;
+    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;  //very important !!
     
     [self updateFrequenciesTable];
 }
