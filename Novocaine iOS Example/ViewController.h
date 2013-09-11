@@ -27,11 +27,15 @@
 #import "RingBuffer.h"
 #import "AudioFileReader.h"
 #import "AudioFileWriter.h"
+#import "MZCodec.h"
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, strong) Novocaine *audioManager;
+
 @property (nonatomic, strong) AudioFileReader *fileReader;
 @property (nonatomic, strong) AudioFileWriter *fileWriter;
+
+
+@property (nonatomic,strong) MZCodec *codec;
 
 @end

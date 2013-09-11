@@ -14,6 +14,8 @@
 		466A328517DBD49E002766DD /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A328017DBD49E002766DD /* CAXException.cpp */; };
 		466A328817DBDAC6002766DD /* CADebugPrintf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A328617DBDAC6002766DD /* CADebugPrintf.cpp */; };
 		466A328B17DBDB81002766DD /* FFTBufferManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A328917DBDB81002766DD /* FFTBufferManager.cpp */; };
+		46E7A91D17DFC7860095F571 /* NSMutableArray_Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */; };
+		46E7A92017DFDD610095F571 /* MZCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46E7A91F17DFDD610095F571 /* MZCodec.mm */; };
 		9AE2143E1768D0C60068A4DC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE2143D1768D0C60068A4DC /* AVFoundation.framework */; };
 		FA0B92E9154ACB100079834E /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA0B92E8154ACB100079834E /* AudioFileReader.mm */; };
 		FA0B92EA154ACB100079834E /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA0B92E8154ACB100079834E /* AudioFileReader.mm */; };
@@ -65,6 +67,10 @@
 		466A328717DBDAC6002766DD /* CADebugPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugPrintf.h; sourceTree = "<group>"; };
 		466A328917DBDB81002766DD /* FFTBufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FFTBufferManager.cpp; sourceTree = "<group>"; };
 		466A328A17DBDB81002766DD /* FFTBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFTBufferManager.h; sourceTree = "<group>"; };
+		46E7A91B17DFC7860095F571 /* NSMutableArray_Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMutableArray_Shuffling.h; sourceTree = "<group>"; };
+		46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMutableArray_Shuffling.m; sourceTree = "<group>"; };
+		46E7A91E17DFDD610095F571 /* MZCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZCodec.h; sourceTree = "<group>"; };
+		46E7A91F17DFDD610095F571 /* MZCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MZCodec.mm; sourceTree = "<group>"; };
 		9AE2143D1768D0C60068A4DC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		FA0B92E7154ACB100079834E /* AudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
 		FA0B92E8154ACB100079834E /* AudioFileReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioFileReader.mm; sourceTree = "<group>"; };
@@ -274,6 +280,10 @@
 				FA5526E2152A6452003D9601 /* ViewController_iPhone.xib */,
 				FA5526E5152A6452003D9601 /* ViewController_iPad.xib */,
 				FA5526D4152A6452003D9601 /* Supporting Files */,
+				46E7A91B17DFC7860095F571 /* NSMutableArray_Shuffling.h */,
+				46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */,
+				46E7A91E17DFDD610095F571 /* MZCodec.h */,
+				46E7A91F17DFDD610095F571 /* MZCodec.mm */,
 			);
 			path = "Novocaine iOS Example";
 			sourceTree = "<group>";
@@ -410,6 +420,8 @@
 				466A328517DBD49E002766DD /* CAXException.cpp in Sources */,
 				466A328817DBDAC6002766DD /* CADebugPrintf.cpp in Sources */,
 				466A328B17DBDB81002766DD /* FFTBufferManager.cpp in Sources */,
+				46E7A91D17DFC7860095F571 /* NSMutableArray_Shuffling.m in Sources */,
+				46E7A92017DFDD610095F571 /* MZCodec.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

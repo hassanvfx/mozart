@@ -1,0 +1,113 @@
+//
+//  MZCodecHelper.h
+//  Novocaine
+//
+//  Created by hass on 9/10/13.
+//  Copyright (c) 2013 Datta Lab, Harvard University. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+
+typedef void (^MZCodecEncoderDidSentPackets)(void);
+typedef void (^MZCodecDecoderDidReceiveMessage)(void);
+
+#define CODEC_16 16
+#define CODEC_32 32
+
+#define ECONDER_MESSAGE @"alfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfa"
+
+
+#define TEST_PATTERN_OFF    0
+#define TEST_PATTERN_1111   1
+#define TEST_PATTERN_0000   2
+#define TEST_PATTERN_0101   3
+#define TEST_PATTERN_1010   4
+#define TEST_PATTERN_1001   5
+#define TEST_PATTERN_0110   6
+
+#define BIT_SET(a,b) ((a) |= (1<<(b)))
+#define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
+#define BIT_FLIP(a,b) ((a) ^= (1<<(b)))
+#define BIT_CHECK(a,b) ((a) & (1<<(b)))
+
+#define CLAMP(min,x,max) (x < min ? min : (x > max ? max : x))
+
+@interface MZCodecPacketDescriptor : NSObject
+
+
+@property(nonatomic,assign)int partIndexBits;
+@property(nonatomic,assign)int partMessageBits;
+@property(nonatomic,assign)int partChecksumBits;
+@property(nonatomic,assign)int partIndexNegBits;
+@property(nonatomic,assign)int partStatusBits;
+
+@property(nonatomic,assign)int completePacketLenghtBytes;
+@property(nonatomic,assign)int completePacketLenghtBits;
+@property(nonatomic,assign)int maxPacketsNumber ;
+
+@property(nonatomic,assign)int maxMessageBytes ;
+@property(nonatomic,assign)int maxMessageBits;
+@property(nonatomic,assign)int numberOfSamples;
+
+
+@end
+
+@interface MZCodecDescriptor : NSObject
+
+
+@property(nonatomic,assign)int  SAMPLING_FREQUENCY ;
+@property(nonatomic,assign)int  MIN_FREQ ;
+@property(nonatomic,assign)int  MAX_FREQ ;
+
+@property(nonatomic,assign)float ENCODER_AMPLITUDE_ON  ;
+@property(nonatomic,assign)float  ENCODER_AMPLITUDE_OFF ;
+@property(nonatomic,assign)int  ENCODER_BINS_SIZE     ;
+@property(nonatomic,assign)int  ENCODER_WAVE_LENGHT     ;
+@property(nonatomic,assign)int  ENCODER_PACKET_REPEAT ;
+@property(nonatomic,assign)int  ENCODER_USE_SILENCE   ;
+@property(nonatomic,assign)int  ENCODER_SHUFFLED_VERSIONS ;
+@property(nonatomic,assign)int  ENCODER_USE_TEST_PATTERN  ;
+
+@property(nonatomic,assign)int  DECODER_SAMPLE_SIZE ;
+@property(nonatomic,assign)float  DECODER_HOP_TOLERANCE_PERCENTAGE ;
+@property(nonatomic,assign)int  DECODER_OK_REPEAT_REQUIREMENT  ;
+@property(nonatomic,assign)float  DECODER_USE_MOVING_AVERAGE  ;
+
+
+@end
+
+
+
+
+
+
+
+@interface MZCodec : NSObject
+
+@property(nonatomic,strong)MZCodecEncoderDidSentPackets     encoderCallback;
+@property(nonatomic,strong)MZCodecDecoderDidReceiveMessage  decoderCallback;
+@property(nonatomic,strong)MZCodecDescriptor  *parameters;
+@property(nonatomic,strong)MZCodecPacketDescriptor  *packetDescriptor;
+@property(nonatomic,strong)NSString  *decoderReceivedMessage;
+@property(nonatomic,strong)NSString  *decoderReceivedMessageBits;
+@property(nonatomic,assign)int       *decoderReceivedBuffer;
+@property(nonatomic,assign)CFAbsoluteTime decoderDecodingLength;
+@property(nonatomic,assign)int decoderExpectedPackets;
+
++(MZCodecPacketDescriptor*)descriptor16bits;
++(MZCodecPacketDescriptor*)descriptor32bits;
+-(void)updateFrequenciesTable;
+-(void) setEncoderData:(NSString*)data;
+
+
+-(void)stopEncoder;
+-(void)setupEncoder;
+
+-(void)stopDecoder;
+-(void)setupDecoder;
+
+-(void)startCodec;
+-(void)stopCodec;
+
+@end
