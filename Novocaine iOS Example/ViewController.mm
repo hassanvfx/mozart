@@ -52,9 +52,17 @@
     
     ViewController *wself=self;
     
-    
+    //8 bytes in 40~ seconds
+//    NSString *testString =@"cl1KisFun!_1_2_3";
+//    int decoderHint = 8;
+
+    //4 bytes in 5~ seconds
     NSString *testString =@"cl1K";
     int decoderHint = 2;
+
+    //2 bytes in 2~ seconds
+//    NSString *testString =@"OK";
+//    int decoderHint = 1;
     
     self.codec = [MZCodec new];
     [self.codec switch32bitsMode];

@@ -114,6 +114,8 @@
     return self;
 }
 
+#pragma mark entry points
+
 -(void) resetParameters{
     self.parameters.SAMPLING_FREQUENCY  =   44100 ;
     self.parameters.MIN_FREQ            =   18800;
@@ -136,24 +138,30 @@
 -(void)switch32bitsMode{
     [self resetParameters];
     [self setPacketDescriptor:[MZCodec descriptor32bits]];
-//    self.parameters.MIN_FREQ            =   18000;
+
+//    self.parameters.MIN_FREQ            =   18500;
 //    self.parameters.MAX_FREQ            =   20300;
-//    self.parameters.ENCODER_PACKET_REPEAT = 32;
+//    self.parameters.ENCODER_PACKET_REPEAT = 64; //very important !!
 //    self.parameters.ENCODER_AMPLITUDE_ON  = 4.0;
+//    self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
 //    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
 //    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.75;
-//    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.75;
-//    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;
+//    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
+//    self.parameters.ENCODER_BINS_SIZE = 4096;  //very important !!
+//    self.parameters.DECODER_SAMPLE_SIZE = 4096*4;  //very important !!
     
-    self.parameters.MIN_FREQ            =   18000;
+    self.parameters.MIN_FREQ            =   18500;
     self.parameters.MAX_FREQ            =   20300;
     self.parameters.ENCODER_PACKET_REPEAT = 64; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = 4.0;
     self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
     self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
-    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
-    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.75;
-    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;  //very important !!
+    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.75;
+    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
+    
+    
+    self.parameters.ENCODER_BINS_SIZE = 4096;  //very important !!
+    self.parameters.DECODER_SAMPLE_SIZE = 4096*4;  //very important !!
     
     [self updateFrequenciesTable];
 }
@@ -166,7 +174,7 @@
     [self updateFrequenciesTable];
 }
 
-#pragma mark entry points
+
 
 -(void)setTestPattern:(int)testPattern{
     self.parameters.ENCODER_USE_TEST_PATTERN=testPattern;
@@ -303,7 +311,7 @@
                 waveBytes = new float[self.parameters.ENCODER_WAVE_LENGHT];
                 [waveForm getBytes:waveBytes];
             }else{
-                waveBytes= [self encodeDataToWave:INT_MAX length:16];
+                waveBytes= [self encodeDataToWave:0 length:self.packetDescriptor.numberOfSamples];
             }
             
             for (int j=0; j<count; j++) {
@@ -816,12 +824,7 @@
     
     __weak MZCodec * wself = self;
     
-    __block int windowSize=512;
-    __block float * window = (float *) malloc(sizeof(float) * windowSize);
-    
-    // generate the window values and store them in the hamming window buffer
-     vDSP_blkman_window(window, windowSize, 0);
-    
+        
     [self.audioManager setInputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
      {
          
@@ -833,12 +836,7 @@
          }
          
          
-         if(windowSize!=numFrames){
-             free(window);
-             windowSize=numFrames;
-             window = (float *) malloc(sizeof(float) * windowSize);
-               vDSP_blkman_window(window, windowSize, 0);
-         }
+      
          
          //          Remove DC component
          //                  for(UInt32 i = 0; i < numFrames; ++i){
@@ -846,7 +844,6 @@
          //                  }
          
          
-         vDSP_vmul(singleChannel, 1, window, 1, singleChannel, 1, numFrames);
          
        
          
@@ -1101,8 +1098,17 @@
         [self.decoderPackets setObject:part forKey:letter];
     }else{
         
+        NSString *oldLetterByes= [part objectForKey:@"letterByte"];
         int oldindex = [[part objectForKey:@"index"]intValue];
         int count = [[part objectForKey:@"count"]intValue];
+        
+        if ([part objectForKey:@"locked"]) {
+            printf("---------------> %s LOCKED AT POSITION > %d (ignoring %s-%d)\n",[oldLetterByes UTF8String],oldindex,[letterByte UTF8String],index);
+           [self checkPacketStatus];
+            return;
+        }
+        
+        
         
 //        if(oldindex>=self.parameters.DECODER_OK_REPEAT_REQUIREMENT){
 //            return;
@@ -1114,7 +1120,7 @@
         }
         
         
-        NSMutableDictionary *partnew=[NSDictionary dictionaryWithObjectsAndKeys:
+        NSMutableDictionary *partnew=[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithInt:count],@"count",
                                       [NSNumber numberWithInt:index],@"index",
                                       letter,@"letter",
@@ -1146,6 +1152,7 @@
         int count = [[part objectForKey:@"count"]intValue];
         count=fmin(count, okPerPacket   );
         if(count>=okPerPacket){
+            [part setObject:@1 forKey:@"locked"];
             ok++;
         }
         

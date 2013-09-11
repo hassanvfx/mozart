@@ -72,12 +72,19 @@ mAudioBufferCurrentIndex(0)
     magnitudes= (Float32*) calloc(mFFTLength,sizeof(Float32));
     mSpectrumAnalysis = vDSP_create_fftsetup(mLog2N, kFFTRadix2);
 	OSAtomicIncrement32Barrier(&mNeedsAudioData);
+    mWindow = (Float32 *) malloc(sizeof(Float32) * mFFTLength);
+    // generate the window values and store them in the hamming window buffer
+    vDSP_hamm_window(mWindow, mFFTLength, 0);
+
+    
+ 
 }
 
 FFTBufferManager::~FFTBufferManager()
 {
     vDSP_destroy_fftsetup(mSpectrumAnalysis);
     free(mAudioBuffer);
+    free(mWindow);
     free (mDspSplitComplex.realp);
     free (mDspSplitComplex.imagp);
 }
@@ -124,6 +131,10 @@ Boolean	FFTBufferManager::ComputeFFT(Float32 *outFFTData)
 //        for(int i = 0; i < mNumberFrames; i++){
 //            printf("%f\n", mAudioBuffer[i]);
 //        }
+        
+        
+        vDSP_vmul(outFFTData, 1, mWindow, 1, outFFTData, 1, mFFTLength);
+        
         
         //Generate a split complex vector from the real data
         vDSP_ctoz((COMPLEX *)mAudioBuffer, 2, &mDspSplitComplex, 1, mFFTLength);

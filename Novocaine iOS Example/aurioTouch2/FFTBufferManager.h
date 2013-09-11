@@ -80,6 +80,7 @@ private:
     Float32             m24BitFracScale;
 	
 	Float32*			mAudioBuffer;
+	Float32*			mWindow;
 	UInt32				mNumberFrames;
     UInt32              mFFTLength;
     UInt32              mLog2N;
