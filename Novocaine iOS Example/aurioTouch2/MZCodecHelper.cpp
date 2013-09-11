@@ -1,6 +1,6 @@
 /*
  
-     File: aurio_helper.h
+     File: aurio_helper.cpp
  Abstract: Helper class for manipulating the remote i/o audio unit
   Version: 1.0
  
@@ -47,39 +47,29 @@
  
  */
 
-#if !defined(__rio_helper_h__)
-#define __rio_helper_h__
+#include "MZCodecHelper.h"
 
-#include "CAStreamBasicDescription.h"
 
-#define kNumDrawBuffers 12
-#define kDefaultDrawSamples 1024
-#define kMinDrawSamples 64
-#define kMaxDrawSamples 4096
 
-extern int drawBufferIdx;
-extern int drawBufferLen;
-extern int drawBufferLen_alloced;
-extern SInt8 *drawBuffers[];
+const Float32 DCRejectionFilter::kDefaultPoleDist = 0.975f;
 
-int SetupRemoteIO (AudioUnit& inRemoteIOUnit, AURenderCallbackStruct inRenderProcm, CAStreamBasicDescription& outFormat);
-void SilenceData(AudioBufferList *inData);
-
-class DCRejectionFilter
+DCRejectionFilter::DCRejectionFilter(Float32 poleDist)
 {
-public:
-	DCRejectionFilter(Float32 poleDist = DCRejectionFilter::kDefaultPoleDist);
-    
-	void InplaceFilter(Float32* ioData, UInt32 numFrames);
-	void Reset();
-    
-protected:
-	
-	// State variables
-	Float32 mY1;
-	Float32 mX1;
-	
-	static const Float32 kDefaultPoleDist;
-};
+	Reset();
+}
 
-#endif
+void DCRejectionFilter::Reset()
+{
+	mY1 = mX1 = 0;	
+}
+
+void DCRejectionFilter::InplaceFilter(Float32* ioData, UInt32 numFrames)
+{
+	for (UInt32 i=0; i < numFrames; i++)
+	{
+        Float32 xCurr = ioData[i];
+		ioData[i] = ioData[i] - mX1 + (kDefaultPoleDist * mY1);
+        mX1 = xCurr;
+        mY1 = ioData[i];
+	}
+}

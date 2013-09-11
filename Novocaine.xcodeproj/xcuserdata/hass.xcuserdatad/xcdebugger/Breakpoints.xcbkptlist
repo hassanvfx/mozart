@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/ViewController.mm"
-         timestampString = "400611561.116602"
+         timestampString = "400626140.854186"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "125"
-         endingLineNumber = "125">
+         startingLineNumber = "290"
+         endingLineNumber = "290">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -96,25 +96,12 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "Novocaine iOS Example/aurioTouch2/aurio_helper.cpp"
-         timestampString = "400524698.450334"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "130"
-         endingLineNumber = "130"
-         landmarkName = "DCRejectionFilter::InplaceFilter(Float32* ioData, UInt32 numFrames)"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624762.733144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "885"
-         endingLineNumber = "885"
+         startingLineNumber = "891"
+         endingLineNumber = "891"
          landmarkName = "-prepareDecoder"
          landmarkType = "5">
       </FileBreakpoint>
@@ -123,11 +110,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624762.733144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "916"
-         endingLineNumber = "916"
+         startingLineNumber = "922"
+         endingLineNumber = "922"
          landmarkName = "-prepareDecoder"
          landmarkType = "5">
       </FileBreakpoint>
@@ -136,11 +123,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624762.733144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "921"
-         endingLineNumber = "921"
+         startingLineNumber = "927"
+         endingLineNumber = "927"
          landmarkName = "-prepareDecoder"
          landmarkType = "5">
       </FileBreakpoint>
@@ -149,11 +136,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400622798.12195"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1041"
-         endingLineNumber = "1041"
+         startingLineNumber = "1053"
+         endingLineNumber = "1053"
          landmarkName = "-unpackData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -162,11 +149,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400622798.12195"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1051"
-         endingLineNumber = "1051"
+         startingLineNumber = "1063"
+         endingLineNumber = "1063"
          landmarkName = "-unpackData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -175,11 +162,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624762.733144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "992"
-         endingLineNumber = "992"
+         startingLineNumber = "1002"
+         endingLineNumber = "1002"
          landmarkName = "-unpackData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -188,11 +175,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624762.733144"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "627"
-         endingLineNumber = "627"
+         startingLineNumber = "628"
+         endingLineNumber = "628"
          landmarkName = "-packData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -201,11 +188,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624999.019044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1161"
-         endingLineNumber = "1161"
+         startingLineNumber = "1200"
+         endingLineNumber = "1200"
          landmarkName = "-checkPacketStatus"
          landmarkType = "5">
       </FileBreakpoint>
@@ -214,11 +201,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624999.019044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1230"
-         endingLineNumber = "1230"
+         startingLineNumber = "1247"
+         endingLineNumber = "1247"
          landmarkName = "-receivedPacketDone:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -227,11 +214,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624999.019044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1229"
-         endingLineNumber = "1229"
+         startingLineNumber = "1246"
+         endingLineNumber = "1246"
          landmarkName = "-receivedPacketDone:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -240,11 +227,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/MZCodec.mm"
-         timestampString = "400612062.586953"
+         timestampString = "400624999.019044"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1225"
-         endingLineNumber = "1225"
+         startingLineNumber = "1242"
+         endingLineNumber = "1242"
          landmarkName = "-receivedPacketDone:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -253,12 +240,25 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Novocaine iOS Example/ViewController.mm"
-         timestampString = "400611561.116602"
+         timestampString = "400625837.117553"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "67"
-         endingLineNumber = "67"
-         landmarkName = "-viewWillAppear:"
+         startingLineNumber = "121"
+         endingLineNumber = "121"
+         landmarkName = "-tabChanged"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Novocaine iOS Example/ViewController.mm"
+         timestampString = "400625837.117553"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "213"
+         endingLineNumber = "213"
+         landmarkName = "-runDecoder"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

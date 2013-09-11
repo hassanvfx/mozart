@@ -49,51 +49,216 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.textField.delegate=self;
+    [self setupCodec];
     
-    ViewController *wself=self;
-    
-    //8 bytes in 40~ seconds
-//    NSString *testString =@"cl1KisFun!_1_2_3";
-//    int decoderHint = 8;
+ 
+}
 
-    //4 bytes in 5~ seconds
-    NSString *testString =@"cl1K";
-    int decoderHint = 2;
-
-    //2 bytes in 2~ seconds
-//    NSString *testString =@"OK";
-//    int decoderHint = 1;
+-(void)setupCodec{
     
     self.codec = [MZCodec new];
-    [self.codec switch32bitsMode];
-    [self.codec setDecoderExpectedPackets:decoderHint];
+
+    // START THE CODEC
+    [self.codec startCodec];
+}
+
+-(void)showMessage:(NSString*)messaget{
     
-    [self.codec setEncoderData:testString];
+    dispatch_async(dispatch_get_main_queue(), ^{
     
-//    [self.codec setTestPattern:TEST_PATTERN_1111];
-    [self.codec setupEncoder];
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Hello World!"
+                                                      message:messaget
+                                                     delegate:nil
+                                            cancelButtonTitle:@"OK"
+                                            otherButtonTitles:nil];
+    [message show];
+    });
+}
+
+
+#pragma mark logic
+
+-(void)cleartStats{
+    self.statusLetter.text=@"--";
+    self.statusAsserts1.text=@"--";
+    self.statusAsserts2.text=@"--";
+    self.statusRate1.text=@"--";
+    self.statusRate2.text=@"--";
+    self.statusFalseAsserts.text=@"--";
+    self.statusErrors.text=@"--";
+}
+
+-(void)updateStats{
     
-    [self.codec setupDecoder];
+    float rate1 = ((float)self.codec.decoderFalsevalids/(float)self.codec.decoderValids)*100.0;
+    float rate2 = ((float)self.codec.decoderInvalids/(float)self.codec.decoderValids)*100.0;
     
-    [self.codec setDecoderCallback:^(void) {
-        NSLog(@"did receive %@ in %0.1f",
-              wself.codec.decoderReceivedMessage,
-              wself.codec.decoderDecodingLength
-              );
+    NSString *letter =self.codec.decoderLastLetter;
+    NSString *asserts = [NSString stringWithFormat:@"%d",self.codec.decoderValids];
+    NSString *falseAsserts = [NSString stringWithFormat:@"%d",self.codec.decoderFalsevalids];
+    NSString *errors = [NSString stringWithFormat:@"%d",self.codec.decoderInvalids];
+    NSString *rate1s = [NSString stringWithFormat:@"%1.2f%%",rate1];
+    NSString *rate2s = [NSString stringWithFormat:@"%1.2f%%",rate2];
+    
+   self.statusLetter.text=letter;
+    self.statusAsserts1.text=asserts;
+    self.statusAsserts2.text=asserts;
+    self.statusRate1.text=rate1s;
+    self.statusRate2.text=rate2s;
+    self.statusFalseAsserts.text=falseAsserts;
+    self.statusErrors.text=errors;
+}
+
+-(IBAction) tabChanged{
+    NSLog(@"tabChanged %d",self.tabBarController.selectedIndex);
+    
+    if(self.tabControl.selectedSegmentIndex==0){
+        //iPhone5
+        self.codec.parameters.ENCODER_AMPLITUDE_ON=0.45;
+    }else{
+        //iPhone4s
+        self.codec.parameters.ENCODER_AMPLITUDE_ON=4.0;
+    }
+      [self.textField resignFirstResponder];
+    [self stopEncoder];
+    
+}
+-(IBAction) textChanged{
+    NSLog(@"textChanged");
+    [self stopEncoder];
+    
+}
+-(IBAction) sendChanged{
+    NSLog(@"sendChanged");
+    if(self.sendSwitch.isOn){
+        NSString *textTosend = self.textField.text;
+//        NSString * formattedStr = [NSString stringWithFormat:@"%4s", [textTosend UTF8String]];
         
-        [wself.codec stopCodec];
+        NSString *formattedStr = ([textTosend length]>4 ? [textTosend substringToIndex:4] : textTosend);
+        for (int i=formattedStr.length; i<4; i++) {
+            formattedStr=[NSString stringWithFormat:@"%@ ",formattedStr];
+        }
+        
+        self.outMessage=formattedStr;
+        self.labelOut.text=self.outMessage;
+        [self runEncoder];
+    }else{
+        self.labelOut.text=@"----";
+        [self stopEncoder];
+    }
+    [self.textField resignFirstResponder];
+    
+}
+-(IBAction) receiveChanged{
+    NSLog(@"receiveChanged");
+    if(self.receiveSwitch.isOn){
+        self.labelResult.text=@"????";
+        self.labelResultTime.text=@"~.s";
+        [self runDecoder];
+    }else{
+        self.labelResult.text=@"----";
+        self.labelResultTime.text=@"0s";
+        [self stopDecoder];
+    }
+    [self.textField resignFirstResponder];
+}
+
+#pragma mark -
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if ([textField.text length] > 4) {
+        textField.text = [textField.text substringToIndex:4-1];
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return NO;
+}
+
+-(void)runEncoder{
+    NSLog(@"runEncoder");
+    
+    // SET THE DATA TO SEND
+    [self.codec setEncoderData:self.outMessage];
+    
+     
+    // IN  CASE OF NEEDED SETUP THE OVERRIDE OF TEST PATTERNS
+    // BEFORE THE ENCODER SETUP
+    //    [self.codec setTestPattern:TEST_PATTERN_1111];
+    
+    // SETUP ENCODER IF NEEDED
+    [self.codec setupEncoder];
+   
+
+}
+
+-(void)stopEncoder{
+    NSLog(@"stopEncoder");
+    [self.sendSwitch setOn:false];
+    [self.codec stopEncoder];
+}
+
+-(void)runDecoder{
+    
+    [self cleartStats];
+    
+    // INDICATE TO THE DECODER HOW MANY 2 BYTE PACKETS SHOULD EXPECT
+    // THIS NEEDS TO MATCH WITH THE NUMBER OF PACKETS SENT!!!
+    int hints =floor(self.outMessage.length/2.0);
+    [self.codec setDecoderExpectedPackets: hints];
+    
+ 
+    __block ViewController *wself=self;
+    [self.codec setDecoderLetterCallback:^(void){
+        NSDictionary *packets =wself.codec.decoderDataByIndex;
+        NSDictionary *packet0 = [packets objectForKey:@"0"];
+        NSDictionary *packet1 = [packets objectForKey:@"1"];
+        NSString *letter0 =@"??";
+        NSString *letter1 =@"??";
+        if(packet0){
+            letter0=[packet0 objectForKey:@"letterByte"];
+        }
+        
+        if(packet1){
+            letter1=[packet1 objectForKey:@"letterByte"];
+        }
+        NSString *result =[NSString stringWithFormat:@"%@%@",letter0,letter1];
+        NSString *time = [NSString stringWithFormat:@"%.1fs",wself.codec.decoderDecodingLength];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            wself.labelResult.text=result;
+            wself.labelResultTime.text=time;
+            [wself updateStats];
+        });
+      
+        
     }];
     
-    [self.codec startCodec];
     
+    [self.codec setDecoderCallback:^(void) {
+        NSString *messaget = [NSString stringWithFormat:@"did receive %@ in %0.1f",
+                              wself.codec.decoderReceivedMessage,
+                              wself.codec.decoderDecodingLength
+                              ];
+        [wself showMessage:messaget];
+        [wself stopDecoder];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [wself.receiveSwitch setOn:false];
+        });
+    }];
     
-#if TARGET_IPHONE_SIMULATOR
-
-#else
-
-#endif
-
+    // SETUP DECODER IF NEEDED
+    [self.codec setupDecoder];
     
+}
+
+-(void)stopDecoder{
+    
+    [self.codec stopDecoder];
 }
 
 #pragma  mark  decoder setup

@@ -11,6 +11,7 @@
 
 typedef void (^MZCodecEncoderDidSentPackets)(void);
 typedef void (^MZCodecDecoderDidReceiveMessage)(void);
+typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 
 #define CODEC_16 16
 #define CODEC_32 32
@@ -87,6 +88,7 @@ typedef void (^MZCodecDecoderDidReceiveMessage)(void);
 
 @property(nonatomic,strong)MZCodecEncoderDidSentPackets     encoderCallback;
 @property(nonatomic,strong)MZCodecDecoderDidReceiveMessage  decoderCallback;
+@property(nonatomic,strong)MZCodecDecoderDidReceiveLetter   decoderLetterCallback;
 @property(nonatomic,strong)MZCodecDescriptor  *parameters;
 @property(nonatomic,strong)MZCodecPacketDescriptor  *packetDescriptor;
 @property(nonatomic,strong)NSString  *decoderReceivedMessage;
@@ -94,6 +96,13 @@ typedef void (^MZCodecDecoderDidReceiveMessage)(void);
 @property(nonatomic,assign)int       *decoderReceivedBuffer;
 @property(nonatomic,assign)CFAbsoluteTime decoderDecodingLength;
 @property(nonatomic,assign)int decoderExpectedPackets;
+@property(nonatomic,strong)NSDictionary *decoderDataByIndex;
+
+@property(nonatomic,assign) int                     decoderValids;
+@property(nonatomic,assign) int                     decoderInvalids;
+@property(nonatomic,assign) int                     decoderFalsevalids;
+@property(nonatomic,strong) NSString                *decoderLastLetter;
+
 
 -(void)setTestPattern:(int)testPattern;
 

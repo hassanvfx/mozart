@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "FA5526CD152A6451003D9601"
-               BuildableName = "Novocaine iOS Example.app"
-               BlueprintName = "Novocaine iOS Example"
+               BuildableName = "Mozart.app"
+               BlueprintName = "Mozart"
                ReferencedContainer = "container:Novocaine.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,8 +33,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA5526CD152A6451003D9601"
-            BuildableName = "Novocaine iOS Example.app"
-            BlueprintName = "Novocaine iOS Example"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
             ReferencedContainer = "container:Novocaine.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -52,8 +52,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA5526CD152A6451003D9601"
-            BuildableName = "Novocaine iOS Example.app"
-            BlueprintName = "Novocaine iOS Example"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
             ReferencedContainer = "container:Novocaine.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -70,8 +70,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "FA5526CD152A6451003D9601"
-            BuildableName = "Novocaine iOS Example.app"
-            BlueprintName = "Novocaine iOS Example"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
             ReferencedContainer = "container:Novocaine.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

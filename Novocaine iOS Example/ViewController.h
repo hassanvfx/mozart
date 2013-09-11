@@ -25,9 +25,31 @@
 #import <UIKit/UIKit.h>
 #import "MZCodec.h"
 
-@interface ViewController : UIViewController
+@interface ViewController : UIViewController<UITextFieldDelegate>
 
-
+@property(nonatomic,strong)UILabel IBOutlet *labelResult;
+@property(nonatomic,strong)UILabel IBOutlet *labelResultTime;
+@property(nonatomic,strong)UILabel IBOutlet *labelOut;
+@property(nonatomic,strong)UISegmentedControl IBOutlet *tabControl;
+@property(nonatomic,strong)UITextField IBOutlet *textField;
+@property(nonatomic,strong)UISwitch IBOutlet *sendSwitch;
+@property(nonatomic,strong)UISwitch IBOutlet *receiveSwitch;
 @property (nonatomic,strong) MZCodec *codec;
+@property(nonatomic,strong)NSString *outMessage;
+
+
+@property(nonatomic,strong)UILabel IBOutlet *statusLetter;
+@property(nonatomic,strong)UILabel IBOutlet *statusAsserts1;
+@property(nonatomic,strong)UILabel IBOutlet *statusFalseAsserts;
+@property(nonatomic,strong)UILabel IBOutlet *statusRate1;
+@property(nonatomic,strong)UILabel IBOutlet *statusAsserts2;
+@property(nonatomic,strong)UILabel IBOutlet *statusErrors;
+@property(nonatomic,strong)UILabel IBOutlet *statusRate2;
+
+-(IBAction) tabChanged;
+-(IBAction) textChanged;
+-(IBAction) sendChanged;
+-(IBAction) receiveChanged;
+
 
 @end

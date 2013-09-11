@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4607981E17DFBC4C003CEA3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */; };
-		466A328217DBD49E002766DD /* aurio_helper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327717DBD49E002766DD /* aurio_helper.cpp */; };
+		466A328217DBD49E002766DD /* MZCodecHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327717DBD49E002766DD /* MZCodecHelper.cpp */; };
 		466A328317DBD49E002766DD /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327B17DBD49E002766DD /* CADebugMacros.cpp */; };
 		466A328417DBD49E002766DD /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A327E17DBD49E002766DD /* CAStreamBasicDescription.cpp */; };
 		466A328517DBD49E002766DD /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 466A328017DBD49E002766DD /* CAXException.cpp */; };
@@ -17,24 +17,9 @@
 		46E7A91D17DFC7860095F571 /* NSMutableArray_Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */; };
 		46E7A92017DFDD610095F571 /* MZCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46E7A91F17DFDD610095F571 /* MZCodec.mm */; };
 		9AE2143E1768D0C60068A4DC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE2143D1768D0C60068A4DC /* AVFoundation.framework */; };
-		FA0B92E9154ACB100079834E /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA0B92E8154ACB100079834E /* AudioFileReader.mm */; };
 		FA0B92EA154ACB100079834E /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA0B92E8154ACB100079834E /* AudioFileReader.mm */; };
-		FA2015DD154B02CC00F8D3AC /* TLC.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA2015DC154B02CC00F8D3AC /* TLC.mp3 */; };
 		FA2015DE154B02CC00F8D3AC /* TLC.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = FA2015DC154B02CC00F8D3AC /* TLC.mp3 */; };
-		FA2015ED154B0DA700F8D3AC /* AudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2015EC154B0DA700F8D3AC /* AudioFileWriter.m */; };
 		FA2015EE154B0DA700F8D3AC /* AudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = FA2015EC154B0DA700F8D3AC /* AudioFileWriter.m */; };
-		FA55267E152A63B6003D9601 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55265D152A63AE003D9601 /* Cocoa.framework */; };
-		FA552684152A63B6003D9601 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FA552682152A63B6003D9601 /* InfoPlist.strings */; };
-		FA552686152A63B6003D9601 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FA552685152A63B6003D9601 /* main.m */; };
-		FA55268A152A63B6003D9601 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = FA552688152A63B6003D9601 /* Credits.rtf */; };
-		FA55268D152A63B6003D9601 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA55268C152A63B6003D9601 /* AppDelegate.mm */; };
-		FA552690152A63B6003D9601 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA55268E152A63B6003D9601 /* MainMenu.xib */; };
-		FA55269A152A63F6003D9601 /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = FA552696152A63F6003D9601 /* Novocaine.m */; };
-		FA55269C152A63F6003D9601 /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = FA552698152A63F6003D9601 /* RingBuffer.mm */; };
-		FA5526A5152A640E003D9601 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55269D152A6405003D9601 /* Accelerate.framework */; };
-		FA5526A6152A640E003D9601 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55269E152A6405003D9601 /* AudioToolbox.framework */; };
-		FA5526A7152A640E003D9601 /* AudioUnit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55269F152A6405003D9601 /* AudioUnit.framework */; };
-		FA5526A8152A640E003D9601 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5526A0152A6405003D9601 /* CoreAudio.framework */; };
 		FA5526D0152A6452003D9601 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA552637152A63A4003D9601 /* UIKit.framework */; };
 		FA5526D1152A6452003D9601 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA552639152A63A4003D9601 /* Foundation.framework */; };
 		FA5526D2152A6452003D9601 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55263B152A63A4003D9601 /* CoreGraphics.framework */; };
@@ -53,8 +38,8 @@
 
 /* Begin PBXFileReference section */
 		4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
-		466A327717DBD49E002766DD /* aurio_helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aurio_helper.cpp; sourceTree = "<group>"; };
-		466A327817DBD49E002766DD /* aurio_helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aurio_helper.h; sourceTree = "<group>"; };
+		466A327717DBD49E002766DD /* MZCodecHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MZCodecHelper.cpp; path = aurioTouch2/MZCodecHelper.cpp; sourceTree = "<group>"; };
+		466A327817DBD49E002766DD /* MZCodecHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MZCodecHelper.h; path = aurioTouch2/MZCodecHelper.h; sourceTree = "<group>"; };
 		466A327A17DBD49E002766DD /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
 		466A327B17DBD49E002766DD /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugMacros.cpp; sourceTree = "<group>"; };
 		466A327C17DBD49E002766DD /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugMacros.h; sourceTree = "<group>"; };
@@ -65,8 +50,8 @@
 		466A328117DBD49E002766DD /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
 		466A328617DBDAC6002766DD /* CADebugPrintf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugPrintf.cpp; sourceTree = "<group>"; };
 		466A328717DBDAC6002766DD /* CADebugPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugPrintf.h; sourceTree = "<group>"; };
-		466A328917DBDB81002766DD /* FFTBufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FFTBufferManager.cpp; sourceTree = "<group>"; };
-		466A328A17DBDB81002766DD /* FFTBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFTBufferManager.h; sourceTree = "<group>"; };
+		466A328917DBDB81002766DD /* FFTBufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FFTBufferManager.cpp; path = aurioTouch2/FFTBufferManager.cpp; sourceTree = "<group>"; };
+		466A328A17DBDB81002766DD /* FFTBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FFTBufferManager.h; path = aurioTouch2/FFTBufferManager.h; sourceTree = "<group>"; };
 		46E7A91B17DFC7860095F571 /* NSMutableArray_Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMutableArray_Shuffling.h; sourceTree = "<group>"; };
 		46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMutableArray_Shuffling.m; sourceTree = "<group>"; };
 		46E7A91E17DFDD610095F571 /* MZCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZCodec.h; sourceTree = "<group>"; };
@@ -84,15 +69,6 @@
 		FA552660152A63AE003D9601 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		FA552661152A63AE003D9601 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		FA552662152A63AE003D9601 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		FA55267C152A63B6003D9601 /* Novocaine Mac Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Novocaine Mac Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FA552681152A63B6003D9601 /* Novocaine Mac Example-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Novocaine Mac Example-Info.plist"; sourceTree = "<group>"; };
-		FA552683152A63B6003D9601 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FA552685152A63B6003D9601 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		FA552687152A63B6003D9601 /* Novocaine Mac Example-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Novocaine Mac Example-Prefix.pch"; sourceTree = "<group>"; };
-		FA552689152A63B6003D9601 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
-		FA55268B152A63B6003D9601 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		FA55268C152A63B6003D9601 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
-		FA55268F152A63B6003D9601 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		FA552695152A63F6003D9601 /* Novocaine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
 		FA552696152A63F6003D9601 /* Novocaine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
 		FA552697152A63F6003D9601 /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
@@ -101,7 +77,7 @@
 		FA55269E152A6405003D9601 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		FA55269F152A6405003D9601 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
 		FA5526A0152A6405003D9601 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
-		FA5526CE152A6451003D9601 /* Novocaine iOS Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Novocaine iOS Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA5526CE152A6451003D9601 /* Mozart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mozart.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA5526D5152A6452003D9601 /* Novocaine iOS Example-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Novocaine iOS Example-Info.plist"; sourceTree = "<group>"; };
 		FA5526D7152A6452003D9601 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FA5526D9152A6452003D9601 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -119,18 +95,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FA552679152A63B6003D9601 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FA5526A5152A640E003D9601 /* Accelerate.framework in Frameworks */,
-				FA5526A6152A640E003D9601 /* AudioToolbox.framework in Frameworks */,
-				FA5526A7152A640E003D9601 /* AudioUnit.framework in Frameworks */,
-				FA5526A8152A640E003D9601 /* CoreAudio.framework in Frameworks */,
-				FA55267E152A63B6003D9601 /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FA5526CB152A6451003D9601 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -149,19 +113,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		466A327617DBD49E002766DD /* aurioTouch2 */ = {
-			isa = PBXGroup;
-			children = (
-				466A328917DBDB81002766DD /* FFTBufferManager.cpp */,
-				466A328A17DBDB81002766DD /* FFTBufferManager.h */,
-				466A327717DBD49E002766DD /* aurio_helper.cpp */,
-				466A327817DBD49E002766DD /* aurio_helper.h */,
-				466A327917DBD49E002766DD /* iPublicUtility */,
-			);
-			name = aurioTouch2;
-			path = "Novocaine iOS Example/aurioTouch2";
-			sourceTree = "<group>";
-		};
 		466A327917DBD49E002766DD /* iPublicUtility */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,17 +127,34 @@
 				466A328617DBDAC6002766DD /* CADebugPrintf.cpp */,
 				466A328717DBDAC6002766DD /* CADebugPrintf.h */,
 			);
-			path = iPublicUtility;
+			name = iPublicUtility;
+			path = aurioTouch2/iPublicUtility;
+			sourceTree = "<group>";
+		};
+		46B7676717E0E0C900F5B21C /* MZCodec */ = {
+			isa = PBXGroup;
+			children = (
+				466A327917DBD49E002766DD /* iPublicUtility */,
+				466A328917DBDB81002766DD /* FFTBufferManager.cpp */,
+				466A328A17DBDB81002766DD /* FFTBufferManager.h */,
+				46E7A91B17DFC7860095F571 /* NSMutableArray_Shuffling.h */,
+				46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */,
+				466A327717DBD49E002766DD /* MZCodecHelper.cpp */,
+				466A327817DBD49E002766DD /* MZCodecHelper.h */,
+				46E7A91E17DFDD610095F571 /* MZCodec.h */,
+				46E7A91F17DFDD610095F571 /* MZCodec.mm */,
+			);
+			name = MZCodec;
+			path = "Novocaine iOS Example";
 			sourceTree = "<group>";
 		};
 		FA552628152A63A4003D9601 = {
 			isa = PBXGroup;
 			children = (
+				46B7676717E0E0C900F5B21C /* MZCodec */,
 				4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */,
-				466A327617DBD49E002766DD /* aurioTouch2 */,
 				FA552694152A63F6003D9601 /* Novocaine */,
-				FA55267F152A63B6003D9601 /* Novocaine Mac Example */,
-				FA5526D3152A6452003D9601 /* Novocaine iOS Example */,
+				FA5526D3152A6452003D9601 /* Mozart iOS example */,
 				FA552636152A63A4003D9601 /* Frameworks */,
 				FA552634152A63A4003D9601 /* Products */,
 			);
@@ -195,8 +163,7 @@
 		FA552634152A63A4003D9601 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FA55267C152A63B6003D9601 /* Novocaine Mac Example.app */,
-				FA5526CE152A6451003D9601 /* Novocaine iOS Example.app */,
+				FA5526CE152A6451003D9601 /* Mozart.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -232,29 +199,6 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		FA55267F152A63B6003D9601 /* Novocaine Mac Example */ = {
-			isa = PBXGroup;
-			children = (
-				FA55268B152A63B6003D9601 /* AppDelegate.h */,
-				FA55268C152A63B6003D9601 /* AppDelegate.mm */,
-				FA55268E152A63B6003D9601 /* MainMenu.xib */,
-				FA552680152A63B6003D9601 /* Supporting Files */,
-			);
-			path = "Novocaine Mac Example";
-			sourceTree = "<group>";
-		};
-		FA552680152A63B6003D9601 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FA552681152A63B6003D9601 /* Novocaine Mac Example-Info.plist */,
-				FA552682152A63B6003D9601 /* InfoPlist.strings */,
-				FA552685152A63B6003D9601 /* main.m */,
-				FA552687152A63B6003D9601 /* Novocaine Mac Example-Prefix.pch */,
-				FA552688152A63B6003D9601 /* Credits.rtf */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		FA552694152A63F6003D9601 /* Novocaine */ = {
 			isa = PBXGroup;
 			children = (
@@ -270,7 +214,7 @@
 			path = Novocaine;
 			sourceTree = "<group>";
 		};
-		FA5526D3152A6452003D9601 /* Novocaine iOS Example */ = {
+		FA5526D3152A6452003D9601 /* Mozart iOS example */ = {
 			isa = PBXGroup;
 			children = (
 				FA5526DC152A6452003D9601 /* AppDelegate.h */,
@@ -280,11 +224,8 @@
 				FA5526E2152A6452003D9601 /* ViewController_iPhone.xib */,
 				FA5526E5152A6452003D9601 /* ViewController_iPad.xib */,
 				FA5526D4152A6452003D9601 /* Supporting Files */,
-				46E7A91B17DFC7860095F571 /* NSMutableArray_Shuffling.h */,
-				46E7A91C17DFC7860095F571 /* NSMutableArray_Shuffling.m */,
-				46E7A91E17DFDD610095F571 /* MZCodec.h */,
-				46E7A91F17DFDD610095F571 /* MZCodec.mm */,
 			);
+			name = "Mozart iOS example";
 			path = "Novocaine iOS Example";
 			sourceTree = "<group>";
 		};
@@ -303,26 +244,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FA55267B152A63B6003D9601 /* Novocaine Mac Example */ = {
+		FA5526CD152A6451003D9601 /* Mozart */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FA552691152A63B6003D9601 /* Build configuration list for PBXNativeTarget "Novocaine Mac Example" */;
-			buildPhases = (
-				FA552678152A63B6003D9601 /* Sources */,
-				FA552679152A63B6003D9601 /* Frameworks */,
-				FA55267A152A63B6003D9601 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Novocaine Mac Example";
-			productName = "Novocaine Mac Example";
-			productReference = FA55267C152A63B6003D9601 /* Novocaine Mac Example.app */;
-			productType = "com.apple.product-type.application";
-		};
-		FA5526CD152A6451003D9601 /* Novocaine iOS Example */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Novocaine iOS Example" */;
+			buildConfigurationList = FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Mozart" */;
 			buildPhases = (
 				FA5526CA152A6451003D9601 /* Sources */,
 				FA5526CB152A6451003D9601 /* Frameworks */,
@@ -332,9 +256,9 @@
 			);
 			dependencies = (
 			);
-			name = "Novocaine iOS Example";
+			name = Mozart;
 			productName = "Novocaine iOS Example";
-			productReference = FA5526CE152A6451003D9601 /* Novocaine iOS Example.app */;
+			productReference = FA5526CE152A6451003D9601 /* Mozart.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -358,24 +282,12 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FA55267B152A63B6003D9601 /* Novocaine Mac Example */,
-				FA5526CD152A6451003D9601 /* Novocaine iOS Example */,
+				FA5526CD152A6451003D9601 /* Mozart */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FA55267A152A63B6003D9601 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FA552684152A63B6003D9601 /* InfoPlist.strings in Resources */,
-				FA55268A152A63B6003D9601 /* Credits.rtf in Resources */,
-				FA552690152A63B6003D9601 /* MainMenu.xib in Resources */,
-				FA2015DD154B02CC00F8D3AC /* TLC.mp3 in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FA5526CC152A6451003D9601 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -390,19 +302,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		FA552678152A63B6003D9601 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FA552686152A63B6003D9601 /* main.m in Sources */,
-				FA55268D152A63B6003D9601 /* AppDelegate.mm in Sources */,
-				FA55269A152A63F6003D9601 /* Novocaine.m in Sources */,
-				FA55269C152A63F6003D9601 /* RingBuffer.mm in Sources */,
-				FA0B92E9154ACB100079834E /* AudioFileReader.mm in Sources */,
-				FA2015ED154B0DA700F8D3AC /* AudioFileWriter.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FA5526CA152A6451003D9601 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,7 +313,7 @@
 				FA5526E1152A6452003D9601 /* ViewController.mm in Sources */,
 				FA0B92EA154ACB100079834E /* AudioFileReader.mm in Sources */,
 				FA2015EE154B0DA700F8D3AC /* AudioFileWriter.m in Sources */,
-				466A328217DBD49E002766DD /* aurio_helper.cpp in Sources */,
+				466A328217DBD49E002766DD /* MZCodecHelper.cpp in Sources */,
 				466A328317DBD49E002766DD /* CADebugMacros.cpp in Sources */,
 				466A328417DBD49E002766DD /* CAStreamBasicDescription.cpp in Sources */,
 				466A328517DBD49E002766DD /* CAXException.cpp in Sources */,
@@ -428,30 +327,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FA552682152A63B6003D9601 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA552683152A63B6003D9601 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		FA552688152A63B6003D9601 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA552689152A63B6003D9601 /* en */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
-		FA55268E152A63B6003D9601 /* MainMenu.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA55268F152A63B6003D9601 /* en */,
-			);
-			name = MainMenu.xib;
-			sourceTree = "<group>";
-		};
 		FA5526D6152A6452003D9601 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -524,50 +399,6 @@
 			};
 			name = Release;
 		};
-		FA552692152A63B6003D9601 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-				);
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Novocaine Mac Example/Novocaine Mac Example-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "Novocaine Mac Example/Novocaine Mac Example-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Debug;
-		};
-		FA552693152A63B6003D9601 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ENABLE_OBJC_ARC = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-				);
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Novocaine Mac Example/Novocaine Mac Example-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				INFOPLIST_FILE = "Novocaine Mac Example/Novocaine Mac Example-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
 		FA5526E9152A6452003D9601 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -576,7 +407,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Novocaine iOS Example/Novocaine iOS Example-Prefix.pch";
 				INFOPLIST_FILE = "Novocaine iOS Example/Novocaine iOS Example-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Mozart;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -589,7 +420,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Novocaine iOS Example/Novocaine iOS Example-Prefix.pch";
 				INFOPLIST_FILE = "Novocaine iOS Example/Novocaine iOS Example-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Mozart;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -606,16 +437,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FA552691152A63B6003D9601 /* Build configuration list for PBXNativeTarget "Novocaine Mac Example" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FA552692152A63B6003D9601 /* Debug */,
-				FA552693152A63B6003D9601 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Novocaine iOS Example" */ = {
+		FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Mozart" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FA5526E9152A6452003D9601 /* Debug */,
