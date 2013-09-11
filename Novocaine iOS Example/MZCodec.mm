@@ -1,4 +1,4 @@
-//
+
 //  MZCodecHelper.m
 //  Novocaine
 //
@@ -111,7 +111,7 @@
         self.parameters.ENCODER_BINS_SIZE           =   4096;
         self.parameters.ENCODER_PACKET_REPEAT       =   4;
         self.parameters.ENCODER_USE_SILENCE         =   0;
-        self.parameters.ENCODER_SHUFFLED_VERSIONS   =   16;
+        self.parameters.ENCODER_SHUFFLED_VERSIONS   =   1;
         
         self.parameters.DECODER_SAMPLE_SIZE                 =   4096;
         self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE    =   0.75;
@@ -130,8 +130,43 @@
 }
 
 
+-(void)switch32bitsMode{
+    [self setPacketDescriptor:[MZCodec descriptor32bits]];
+//    self.parameters.MIN_FREQ            =   18000;
+//    self.parameters.MAX_FREQ            =   20300;
+//    self.parameters.ENCODER_PACKET_REPEAT = 32;
+//    self.parameters.ENCODER_AMPLITUDE_ON  = 4.0;
+//    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
+//    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.75;
+//    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.75;
+//    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;
+    
+    self.parameters.MIN_FREQ            =   18000;
+    self.parameters.MAX_FREQ            =   20300;
+    self.parameters.ENCODER_PACKET_REPEAT = 64;
+    self.parameters.ENCODER_AMPLITUDE_ON  = 4.0;
+    self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
+    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
+    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
+    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.75;
+    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;
+    
+    [self updateFrequenciesTable];
+}
+
+-(void)switch16bitsMode{
+    [self setPacketDescriptor:[MZCodec descriptor32bits]];
+    self.parameters.MIN_FREQ            =   18800;
+    self.parameters.MAX_FREQ            =   19800;
+    [self updateFrequenciesTable];
+}
 
 #pragma mark entry points
+
+-(void)setTestPattern:(int)testPattern{
+    self.parameters.ENCODER_USE_TEST_PATTERN=testPattern;
+    [self setEncoderData:@"1234567890123456789012345678901234567890"];
+}
 
 -(void)updateFrequenciesTable{
     self.codecFrequenciesTable=[NSMutableArray new];
@@ -446,7 +481,7 @@
         printf("message part > ");
         //check the final output
         for (int i=0; i<partMessageBits; i++) {
-            char letter = packetData[ i/8];
+            char letter = packetData[i/8];
             
             if(BIT_CHECK( letter, i%8)){
                 printf("1");
@@ -516,8 +551,9 @@
         
         for (int i=0; i<partMessageBits; i++) {
             
-            char *pointer = packetData+(i/8);
-            if( BIT_CHECK(* pointer,i) ){
+            int byte = i/8;
+            char pointer = packetData[byte];
+            if( BIT_CHECK( pointer,i-(byte*8)) ){
                 BIT_SET(finalPacket,   position);
             }else{
                 BIT_CLEAR(finalPacket,   position);
@@ -577,7 +613,7 @@
         
         //CREATE THE ENCODED WAVEFROM
         
-        float *encodedWaveForm=[self encodeDataToWave:finalPacket length:16];
+        float *encodedWaveForm=[self encodeDataToWave:finalPacket length:self.packetDescriptor.numberOfSamples];
         
         NSData *waveForm=[NSData dataWithBytes:encodedWaveForm length:self.parameters.ENCODER_WAVE_LENGHT *sizeof(float)];
         
@@ -634,9 +670,9 @@
     }
     
     
-    //    printf("---------------\n");
-    //    printf(" IMPULSES TABLE\n");
-    //    printf("BIN\tFREQ\tMAG\n");
+        printf("---------------\n");
+        printf(" IMPULSES TABLE\n");
+        printf("BIN\tFREQ\tMAG\n");
     for (int i=0; i<dataSamples; i++) {
         
         
@@ -699,7 +735,7 @@
         
         int bin = binSize*freq;
         impulses[bin ]=a;
-        //        printf("%d\t%d\t%f\n", bin, freq , a);
+        printf("%d\t%d\t%f\n", bin, freq , a);
         
     }
     printf("---------------\n");
@@ -775,6 +811,11 @@
     
     __weak MZCodec * wself = self;
     
+    __block int windowSize=512;
+    __block float * window = (float *) malloc(sizeof(float) * windowSize);
+    
+    // generate the window values and store them in the hamming window buffer
+     vDSP_blkman_window(window, windowSize, 0);
     
     [self.audioManager setInputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
      {
@@ -786,11 +827,23 @@
              singleChannel[i] = data[i*2];
          }
          
+         
+         if(windowSize!=numFrames){
+             free(window);
+             windowSize=numFrames;
+             window = (float *) malloc(sizeof(float) * windowSize);
+               vDSP_blkman_window(window, windowSize, 0);
+         }
+         
          //          Remove DC component
          //                  for(UInt32 i = 0; i < numFrames; ++i){
          wself.dcFilter[0].InplaceFilter((Float32*)singleChannel, numFrames);
          //                  }
          
+         
+         vDSP_vmul(singleChannel, 1, window, 1, singleChannel, 1, numFrames);
+         
+       
          
          if (wself.fftBufferManager->NeedsNewAudioData()){
              //data is interleaved so only take half the data
@@ -873,7 +926,7 @@
              NSString *bitMessage = [self stringFromPacket:packet];
              printf("---------- result= %s\n",[bitMessage UTF8String]);
              
-             char *letter = [wself unpackData1BytesX4:packet];
+             char *letter = [wself unpackData:packet];
              [self testQuality:bitMessage letter:letter];
              
          }
@@ -884,16 +937,16 @@
 
 #pragma mark 4bytes
     
--(char*)unpackData1BytesX4:(int)pack{
+-(char*)unpackData:(int)pack{
     
     int index=0;
     int indexInverted=0;
     int onCount=0;
     int status=0;
     
-    
-    char* messageBits=new char[self.packetDescriptor.partMessageBits/8];
-//    messageBits[0]='\0';
+    int bytes =(self.packetDescriptor.partMessageBits/8);
+    char* messageBits=new char[bytes+1];
+    messageBits[bytes]='\0';
 //    messageBits[1]='\0';
     
     int position=0;
@@ -919,17 +972,17 @@
     
     for (int i=0; i<descriptor.partMessageBits; i++) {
         
-        
-        char *pointer = messageBits+(i/8);
+        int byte = i/8;
+        char *pointer = messageBits+byte;
         if( BIT_CHECK((int) pack,position) ){
-            BIT_SET(*pointer, i);
+            BIT_SET(*pointer, i-(byte*8));
             onRealCount++;
             [refMessageBits appendString:@"1"];
             [refMessageBitsContent appendString:@"1"];
         }else{
             [refMessageBits appendString:@"0"];
             [refMessageBitsContent appendString:@"0"];
-            BIT_CLEAR(*pointer, i);
+            BIT_CLEAR(*pointer, i-(byte*8));
         }
         position++;
     }
@@ -976,18 +1029,17 @@
     }
     
     
+    messageBits[bytes]='\0';
     NSString *packet = [self stringFromPacket:pack];
     printf("CHECKING   %s\n",[packet UTF8String]);
     
-    NSData *data = [NSData dataWithBytes:messageBits length:self.packetDescriptor.partMessageBits/8];
-    NSString *letter = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    NSData *data = [NSData dataWithBytes:messageBits length:(self.packetDescriptor.partMessageBits/8)+1];
+    NSString *letter = [[NSString alloc]initWithUTF8String:messageBits];
     
     if(index==( (descriptor.maxPacketsNumber-1)-indexInverted)
        &&
        onRealCount==onCount
-       
        && onRealCount!=0
-       && messageBits[0] != '\0'
        //       && status
        ){
         
@@ -1023,6 +1075,9 @@
 
 -(void)didReceive:(NSString*)letter part:(int)index refMessage:(NSString*)refMessage refContent:(NSString*)refContent{
     
+    if(letter==nil){
+        return;
+    }
     NSString *letterByte=[NSString stringWithString:letter];
     letter=[NSString stringWithFormat:@">%@-%d-%@<",letter,index,refMessage];
     
@@ -1033,7 +1088,7 @@
                                    [NSNumber numberWithInt:0],@"count",
                                    [NSNumber numberWithInt:index],@"index",
                                    letter,@"letter",
-                                   letterByte,@"letterByte",
+                                   [letterByte copy],@"letterByte",
                                    refMessage,@"refMessage",
                                    refContent,@"refContent",
                                    nil];
@@ -1044,7 +1099,9 @@
         int oldindex = [[part objectForKey:@"index"]intValue];
         int count = [[part objectForKey:@"count"]intValue];
         
-        
+//        if(oldindex>=self.parameters.DECODER_OK_REPEAT_REQUIREMENT){
+//            return;
+//        }
         if(oldindex==index){
             ++count;
         }else{
@@ -1056,7 +1113,7 @@
                                       [NSNumber numberWithInt:count],@"count",
                                       [NSNumber numberWithInt:index],@"index",
                                       letter,@"letter",
-                                      letterByte,@"letterByte",
+                                      [letterByte copy],@"letterByte",
                                       refMessage,@"refMessage",
                                       refContent,@"refContent",
                                       nil];
@@ -1124,46 +1181,40 @@
         self.decoderDecodingLength = CFAbsoluteTimeGetCurrent()-self.decoderInitTime;
         
         
-        NSString *a,*b,*c,*d=nil;
-        NSArray *allKeys = [byIndex allKeys];
-        
-        
-        for (int i=0; i<byIndex.count; i++) {
-            
-            NSString *indexName = [allKeys objectAtIndex:i];
-            NSMutableDictionary *part =[byIndex objectForKey:indexName];
-            NSString *letter=[part objectForKey:@"letterByte"];
-            
-            int index = [[part objectForKey:@"index"]intValue];
-            
-            switch (index) {
-                case 0:
-                    a=letter;
-                    break;
-                    
-                case 1:
-                    b=letter;
-                    break;
-                    
-                case 2:
-                    c=letter;
-                    break;
-                    
-                case 3:
-                    d=letter;
-                    break;
-                    
-                default:
-                    break;
-            }
-            
-            
-            
-        }
+//        NSArray *allKeys = [byIndex allKeys];
+//        NSMutableArray *containers =[NSMutableArray new];
+//        for (int i=0; i<self.packetDescriptor.maxPacketsNumber; i++) {
+//            [containers addObject:@""];
+//        }
+//        for (int i=0; i<byIndex.count; i++) {
+//            
+//            NSString *indexName = [allKeys objectAtIndex:i];
+//            NSMutableDictionary *part =[byIndex objectForKey:indexName];
+//            NSString *letter=[[part objectForKey:@"letterByte"]copy];
+//            
+//            int index = [[part objectForKey:@"index"]intValue];
+//            ]
+//            [containers replaceObjectAtIndex:index withObject:letter];
+//            
+//        }
         
         //         self.lastReceivedMessage = [NSString stringWithFormat:@"%@%@%@%@",b,d,a,c];
+      
+        NSMutableArray *allObjects = [NSMutableArray arrayWithArray:[byIndex allValues]];
+
+        NSSortDescriptor *aSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
+        [allObjects sortUsingDescriptors:[NSArray arrayWithObject:aSortDescriptor]];
         
-        self.decoderReceivedMessage = [NSString stringWithFormat:@"%@%@%@%@",a,b,c,d];
+        NSMutableArray *letters=[NSMutableArray new];
+        for (int i=0; i<allObjects.count; i++) {
+            NSMutableDictionary *part =[allObjects objectAtIndex:i];
+            NSString *letter=[[part objectForKey:@"letterByte"]copy];
+            
+            [letters addObject:letter];
+        }
+        
+        NSString *content =[letters componentsJoinedByString:@""];
+        self.decoderReceivedMessage = content;
         self.decoderReceivedMessageBits = [self stringFromPacket:1];
         self.decoderReceivedBuffer=nil;
         if(self.decoderCallback){

@@ -46,18 +46,12 @@
 #define DECODER_OK_REPEAT_REQUIREMENT  2
 #define DECODER_USE_MOVING_AVERAGE  0.0
 
-#define TEST_PATTERN_1111 0
-#define TEST_PATTERN_0101 0
-#define TEST_PATTERN_1010 0
-#define TEST_PATTERN_1001 0
-#define TEST_PATTERN_0110 0
+//#define TEST_PATTERN_1111 0
+//#define TEST_PATTERN_0101 0
+//#define TEST_PATTERN_1010 0
+//#define TEST_PATTERN_1001 0
+//#define TEST_PATTERN_0110 0
 
-#define BIT_SET(a,b) ((a) |= (1<<(b)))
-#define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
-#define BIT_FLIP(a,b) ((a) ^= (1<<(b)))
-#define BIT_CHECK(a,b) ((a) & (1<<(b)))
-
-#define CLAMP(min,x,max) (x < min ? min : (x > max ? max : x))
 
 @interface ViewController ()
 
@@ -108,14 +102,17 @@
     
     ViewController *wself=self;
     
+    
+    NSString *testString =@"cl1K";
+    int decoderHint = 2;
+    
     self.codec = [MZCodec new];
+    [self.codec switch32bitsMode];
+    [self.codec setDecoderExpectedPackets:decoderHint];
     
-//    [self.codec setPacketDescriptor:[MZCodec descriptor32bits]];
-//    [self.codec setDecoderExpectedPackets:2];
-//    [self.codec updateFrequenciesTable];
+    [self.codec setEncoderData:testString];
     
-  
-    [self.codec setEncoderData:@"yoga"];
+//    [self.codec setTestPattern:TEST_PATTERN_1111];
     [self.codec setupEncoder];
     
     [self.codec setupDecoder];

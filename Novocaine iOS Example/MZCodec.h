@@ -19,12 +19,12 @@ typedef void (^MZCodecDecoderDidReceiveMessage)(void);
 
 
 #define TEST_PATTERN_OFF    0
-#define TEST_PATTERN_1111   1
-#define TEST_PATTERN_0000   2
-#define TEST_PATTERN_0101   3
-#define TEST_PATTERN_1010   4
-#define TEST_PATTERN_1001   5
-#define TEST_PATTERN_0110   6
+#define TEST_PATTERN_1111   1001
+#define TEST_PATTERN_0000   1002
+#define TEST_PATTERN_0101   1003
+#define TEST_PATTERN_1010   1004
+#define TEST_PATTERN_1001   1005
+#define TEST_PATTERN_0110   1006
 
 #define BIT_SET(a,b) ((a) |= (1<<(b)))
 #define BIT_CLEAR(a,b) ((a) &= ~(1<<(b)))
@@ -95,6 +95,8 @@ typedef void (^MZCodecDecoderDidReceiveMessage)(void);
 @property(nonatomic,assign)CFAbsoluteTime decoderDecodingLength;
 @property(nonatomic,assign)int decoderExpectedPackets;
 
+-(void)setTestPattern:(int)testPattern;
+
 +(MZCodecPacketDescriptor*)descriptor16bits;
 +(MZCodecPacketDescriptor*)descriptor32bits;
 -(void)updateFrequenciesTable;
@@ -109,5 +111,8 @@ typedef void (^MZCodecDecoderDidReceiveMessage)(void);
 
 -(void)startCodec;
 -(void)stopCodec;
+
+-(void)switch32bitsMode;
+-(void)switch16bitsMode;
 
 @end
