@@ -92,8 +92,9 @@
 -(void)updateStats{
     
     int total = self.codec.decoderInvalids+self.codec.decoderValids;
+    int total2 = self.codec.decoderFalsevalids+self.codec.decoderValids;
     
-    float rate1 = ((float)self.codec.decoderFalsevalids/(float)total)*100.0;
+    float rate1 = ((float)self.codec.decoderFalsevalids/(float)total2)*100.0;
     float rate2 = ((float)self.codec.decoderInvalids/(float)total)*100.0;
     
     NSString *letter =self.codec.decoderLastLetter;
