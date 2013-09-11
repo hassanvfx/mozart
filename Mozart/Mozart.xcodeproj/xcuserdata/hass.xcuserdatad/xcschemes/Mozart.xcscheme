@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FA55267B152A63B6003D9601"
-               BuildableName = "Novocaine Mac Example.app"
-               BlueprintName = "Novocaine Mac Example"
-               ReferencedContainer = "container:Novocaine.xcodeproj">
+               BlueprintIdentifier = "FA5526CD152A6451003D9601"
+               BuildableName = "Mozart.app"
+               BlueprintName = "Mozart"
+               ReferencedContainer = "container:Mozart.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA55267B152A63B6003D9601"
-            BuildableName = "Novocaine Mac Example.app"
-            BlueprintName = "Novocaine Mac Example"
-            ReferencedContainer = "container:Novocaine.xcodeproj">
+            BlueprintIdentifier = "FA5526CD152A6451003D9601"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
+            ReferencedContainer = "container:Mozart.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -51,10 +51,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA55267B152A63B6003D9601"
-            BuildableName = "Novocaine Mac Example.app"
-            BlueprintName = "Novocaine Mac Example"
-            ReferencedContainer = "container:Novocaine.xcodeproj">
+            BlueprintIdentifier = "FA5526CD152A6451003D9601"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
+            ReferencedContainer = "container:Mozart.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -69,10 +69,10 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FA55267B152A63B6003D9601"
-            BuildableName = "Novocaine Mac Example.app"
-            BlueprintName = "Novocaine Mac Example"
-            ReferencedContainer = "container:Novocaine.xcodeproj">
+            BlueprintIdentifier = "FA5526CD152A6451003D9601"
+            BuildableName = "Mozart.app"
+            BlueprintName = "Mozart"
+            ReferencedContainer = "container:Mozart.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

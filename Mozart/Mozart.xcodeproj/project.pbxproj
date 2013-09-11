@@ -1,0 +1,443 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4607981E17DFBC4C003CEA3E /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */; };
+		46A01D4E17E1158900DA0EED /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D2317E1158900DA0EED /* AppDelegate.mm */; };
+		46A01D4F17E1158900DA0EED /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 46A01D2517E1158900DA0EED /* InfoPlist.strings */; };
+		46A01D5017E1158900DA0EED /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46A01D2717E1158900DA0EED /* ViewController_iPad.xib */; };
+		46A01D5117E1158900DA0EED /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46A01D2917E1158900DA0EED /* ViewController_iPhone.xib */; };
+		46A01D5217E1158900DA0EED /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D2B17E1158900DA0EED /* main.m */; };
+		46A01D5317E1158900DA0EED /* FFTBufferManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D2D17E1158900DA0EED /* FFTBufferManager.cpp */; };
+		46A01D5417E1158900DA0EED /* CADebugMacros.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3117E1158900DA0EED /* CADebugMacros.cpp */; };
+		46A01D5517E1158900DA0EED /* CADebugPrintf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3317E1158900DA0EED /* CADebugPrintf.cpp */; };
+		46A01D5617E1158900DA0EED /* CAStreamBasicDescription.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3617E1158900DA0EED /* CAStreamBasicDescription.cpp */; };
+		46A01D5717E1158900DA0EED /* CAXException.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3817E1158900DA0EED /* CAXException.cpp */; };
+		46A01D5817E1158900DA0EED /* MZCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3B17E1158900DA0EED /* MZCodec.mm */; };
+		46A01D5917E1158900DA0EED /* MZCodecHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3C17E1158900DA0EED /* MZCodecHelper.cpp */; };
+		46A01D5A17E1158900DA0EED /* NSMutableArray_Shuffling.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D3F17E1158900DA0EED /* NSMutableArray_Shuffling.m */; };
+		46A01D5B17E1158900DA0EED /* mozart.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46A01D4117E1158900DA0EED /* mozart.plist */; };
+		46A01D5C17E1158900DA0EED /* AudioFileReader.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D4417E1158900DA0EED /* AudioFileReader.mm */; };
+		46A01D5D17E1158900DA0EED /* AudioFileWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D4617E1158900DA0EED /* AudioFileWriter.m */; };
+		46A01D5E17E1158900DA0EED /* Novocaine.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D4817E1158900DA0EED /* Novocaine.m */; };
+		46A01D5F17E1158900DA0EED /* RingBuffer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D4A17E1158900DA0EED /* RingBuffer.mm */; };
+		46A01D6017E1158900DA0EED /* TLC.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 46A01D4B17E1158900DA0EED /* TLC.mp3 */; };
+		46A01D6117E1158900DA0EED /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 46A01D4D17E1158900DA0EED /* ViewController.mm */; };
+		9AE2143E1768D0C60068A4DC /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE2143D1768D0C60068A4DC /* AVFoundation.framework */; };
+		FA5526D0152A6452003D9601 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA552637152A63A4003D9601 /* UIKit.framework */; };
+		FA5526D1152A6452003D9601 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA552639152A63A4003D9601 /* Foundation.framework */; };
+		FA5526D2152A6452003D9601 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA55263B152A63A4003D9601 /* CoreGraphics.framework */; };
+		FA5526EF152A6466003D9601 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5526EB152A6466003D9601 /* Accelerate.framework */; };
+		FA5526F0152A6466003D9601 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5526EC152A6466003D9601 /* AudioToolbox.framework */; };
+		FA5526F2152A6466003D9601 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA5526EE152A6466003D9601 /* CoreAudio.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		46A01D2217E1158900DA0EED /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		46A01D2317E1158900DA0EED /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		46A01D2617E1158900DA0EED /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
+		46A01D2817E1158900DA0EED /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ViewController_iPad.xib; sourceTree = "<group>"; };
+		46A01D2A17E1158900DA0EED /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = ViewController_iPhone.xib; sourceTree = "<group>"; };
+		46A01D2B17E1158900DA0EED /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		46A01D2D17E1158900DA0EED /* FFTBufferManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FFTBufferManager.cpp; sourceTree = "<group>"; };
+		46A01D2E17E1158900DA0EED /* FFTBufferManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FFTBufferManager.h; sourceTree = "<group>"; };
+		46A01D3017E1158900DA0EED /* CABitOperations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CABitOperations.h; sourceTree = "<group>"; };
+		46A01D3117E1158900DA0EED /* CADebugMacros.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugMacros.cpp; sourceTree = "<group>"; };
+		46A01D3217E1158900DA0EED /* CADebugMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugMacros.h; sourceTree = "<group>"; };
+		46A01D3317E1158900DA0EED /* CADebugPrintf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CADebugPrintf.cpp; sourceTree = "<group>"; };
+		46A01D3417E1158900DA0EED /* CADebugPrintf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CADebugPrintf.h; sourceTree = "<group>"; };
+		46A01D3517E1158900DA0EED /* CAMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAMath.h; sourceTree = "<group>"; };
+		46A01D3617E1158900DA0EED /* CAStreamBasicDescription.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAStreamBasicDescription.cpp; sourceTree = "<group>"; };
+		46A01D3717E1158900DA0EED /* CAStreamBasicDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAStreamBasicDescription.h; sourceTree = "<group>"; };
+		46A01D3817E1158900DA0EED /* CAXException.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CAXException.cpp; sourceTree = "<group>"; };
+		46A01D3917E1158900DA0EED /* CAXException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CAXException.h; sourceTree = "<group>"; };
+		46A01D3A17E1158900DA0EED /* MZCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZCodec.h; sourceTree = "<group>"; };
+		46A01D3B17E1158900DA0EED /* MZCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MZCodec.mm; sourceTree = "<group>"; };
+		46A01D3C17E1158900DA0EED /* MZCodecHelper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MZCodecHelper.cpp; sourceTree = "<group>"; };
+		46A01D3D17E1158900DA0EED /* MZCodecHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MZCodecHelper.h; sourceTree = "<group>"; };
+		46A01D3E17E1158900DA0EED /* NSMutableArray_Shuffling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSMutableArray_Shuffling.h; sourceTree = "<group>"; };
+		46A01D3F17E1158900DA0EED /* NSMutableArray_Shuffling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSMutableArray_Shuffling.m; sourceTree = "<group>"; };
+		46A01D4017E1158900DA0EED /* mozart-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "mozart-Prefix.pch"; sourceTree = "<group>"; };
+		46A01D4117E1158900DA0EED /* mozart.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = mozart.plist; sourceTree = "<group>"; };
+		46A01D4317E1158900DA0EED /* AudioFileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileReader.h; sourceTree = "<group>"; };
+		46A01D4417E1158900DA0EED /* AudioFileReader.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AudioFileReader.mm; sourceTree = "<group>"; };
+		46A01D4517E1158900DA0EED /* AudioFileWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioFileWriter.h; sourceTree = "<group>"; };
+		46A01D4617E1158900DA0EED /* AudioFileWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioFileWriter.m; sourceTree = "<group>"; };
+		46A01D4717E1158900DA0EED /* Novocaine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Novocaine.h; sourceTree = "<group>"; };
+		46A01D4817E1158900DA0EED /* Novocaine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Novocaine.m; sourceTree = "<group>"; };
+		46A01D4917E1158900DA0EED /* RingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingBuffer.h; sourceTree = "<group>"; };
+		46A01D4A17E1158900DA0EED /* RingBuffer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = RingBuffer.mm; sourceTree = "<group>"; };
+		46A01D4B17E1158900DA0EED /* TLC.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = TLC.mp3; sourceTree = "<group>"; };
+		46A01D4C17E1158900DA0EED /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		46A01D4D17E1158900DA0EED /* ViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9AE2143D1768D0C60068A4DC /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		FA552637152A63A4003D9601 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		FA552639152A63A4003D9601 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FA55263B152A63A4003D9601 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		FA55265D152A63AE003D9601 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = Library/Frameworks/Cocoa.framework; sourceTree = DEVELOPER_DIR; };
+		FA552660152A63AE003D9601 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		FA552661152A63AE003D9601 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		FA552662152A63AE003D9601 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		FA55269D152A6405003D9601 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/Accelerate.framework; sourceTree = DEVELOPER_DIR; };
+		FA55269E152A6405003D9601 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		FA55269F152A6405003D9601 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/AudioUnit.framework; sourceTree = DEVELOPER_DIR; };
+		FA5526A0152A6405003D9601 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/CoreAudio.framework; sourceTree = DEVELOPER_DIR; };
+		FA5526CE152A6451003D9601 /* Mozart.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mozart.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA5526EB152A6466003D9601 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		FA5526EC152A6466003D9601 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		FA5526ED152A6466003D9601 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		FA5526EE152A6466003D9601 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA5526CB152A6451003D9601 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4607981E17DFBC4C003CEA3E /* MediaPlayer.framework in Frameworks */,
+				9AE2143E1768D0C60068A4DC /* AVFoundation.framework in Frameworks */,
+				FA5526EF152A6466003D9601 /* Accelerate.framework in Frameworks */,
+				FA5526F0152A6466003D9601 /* AudioToolbox.framework in Frameworks */,
+				FA5526F2152A6466003D9601 /* CoreAudio.framework in Frameworks */,
+				FA5526D0152A6452003D9601 /* UIKit.framework in Frameworks */,
+				FA5526D1152A6452003D9601 /* Foundation.framework in Frameworks */,
+				FA5526D2152A6452003D9601 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		46A01D2417E1158900DA0EED /* en.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				46A01D2517E1158900DA0EED /* InfoPlist.strings */,
+				46A01D2717E1158900DA0EED /* ViewController_iPad.xib */,
+				46A01D2917E1158900DA0EED /* ViewController_iPhone.xib */,
+			);
+			path = en.lproj;
+			sourceTree = "<group>";
+		};
+		46A01D2C17E1158900DA0EED /* Mozart */ = {
+			isa = PBXGroup;
+			children = (
+				46A01D2D17E1158900DA0EED /* FFTBufferManager.cpp */,
+				46A01D2E17E1158900DA0EED /* FFTBufferManager.h */,
+				46A01D2F17E1158900DA0EED /* iPublicUtility */,
+				46A01D3A17E1158900DA0EED /* MZCodec.h */,
+				46A01D3B17E1158900DA0EED /* MZCodec.mm */,
+				46A01D3C17E1158900DA0EED /* MZCodecHelper.cpp */,
+				46A01D3D17E1158900DA0EED /* MZCodecHelper.h */,
+				46A01D3E17E1158900DA0EED /* NSMutableArray_Shuffling.h */,
+				46A01D3F17E1158900DA0EED /* NSMutableArray_Shuffling.m */,
+			);
+			path = Mozart;
+			sourceTree = "<group>";
+		};
+		46A01D2F17E1158900DA0EED /* iPublicUtility */ = {
+			isa = PBXGroup;
+			children = (
+				46A01D3017E1158900DA0EED /* CABitOperations.h */,
+				46A01D3117E1158900DA0EED /* CADebugMacros.cpp */,
+				46A01D3217E1158900DA0EED /* CADebugMacros.h */,
+				46A01D3317E1158900DA0EED /* CADebugPrintf.cpp */,
+				46A01D3417E1158900DA0EED /* CADebugPrintf.h */,
+				46A01D3517E1158900DA0EED /* CAMath.h */,
+				46A01D3617E1158900DA0EED /* CAStreamBasicDescription.cpp */,
+				46A01D3717E1158900DA0EED /* CAStreamBasicDescription.h */,
+				46A01D3817E1158900DA0EED /* CAXException.cpp */,
+				46A01D3917E1158900DA0EED /* CAXException.h */,
+			);
+			path = iPublicUtility;
+			sourceTree = "<group>";
+		};
+		46A01D4217E1158900DA0EED /* Novocaine */ = {
+			isa = PBXGroup;
+			children = (
+				46A01D4317E1158900DA0EED /* AudioFileReader.h */,
+				46A01D4417E1158900DA0EED /* AudioFileReader.mm */,
+				46A01D4517E1158900DA0EED /* AudioFileWriter.h */,
+				46A01D4617E1158900DA0EED /* AudioFileWriter.m */,
+				46A01D4717E1158900DA0EED /* Novocaine.h */,
+				46A01D4817E1158900DA0EED /* Novocaine.m */,
+				46A01D4917E1158900DA0EED /* RingBuffer.h */,
+				46A01D4A17E1158900DA0EED /* RingBuffer.mm */,
+			);
+			path = Novocaine;
+			sourceTree = "<group>";
+		};
+		FA552628152A63A4003D9601 = {
+			isa = PBXGroup;
+			children = (
+				46A01D2217E1158900DA0EED /* AppDelegate.h */,
+				46A01D2317E1158900DA0EED /* AppDelegate.mm */,
+				46A01D2417E1158900DA0EED /* en.lproj */,
+				46A01D2B17E1158900DA0EED /* main.m */,
+				46A01D2C17E1158900DA0EED /* Mozart */,
+				46A01D4017E1158900DA0EED /* mozart-Prefix.pch */,
+				46A01D4117E1158900DA0EED /* mozart.plist */,
+				46A01D4217E1158900DA0EED /* Novocaine */,
+				46A01D4B17E1158900DA0EED /* TLC.mp3 */,
+				46A01D4C17E1158900DA0EED /* ViewController.h */,
+				46A01D4D17E1158900DA0EED /* ViewController.mm */,
+				4607981D17DFBC4C003CEA3E /* MediaPlayer.framework */,
+				FA552636152A63A4003D9601 /* Frameworks */,
+				FA552634152A63A4003D9601 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FA552634152A63A4003D9601 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA5526CE152A6451003D9601 /* Mozart.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA552636152A63A4003D9601 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FA5526EB152A6466003D9601 /* Accelerate.framework */,
+				FA55269D152A6405003D9601 /* Accelerate.framework */,
+				FA5526EC152A6466003D9601 /* AudioToolbox.framework */,
+				FA55269E152A6405003D9601 /* AudioToolbox.framework */,
+				FA5526ED152A6466003D9601 /* AudioUnit.framework */,
+				FA55269F152A6405003D9601 /* AudioUnit.framework */,
+				9AE2143D1768D0C60068A4DC /* AVFoundation.framework */,
+				FA5526EE152A6466003D9601 /* CoreAudio.framework */,
+				FA5526A0152A6405003D9601 /* CoreAudio.framework */,
+				FA55263B152A63A4003D9601 /* CoreGraphics.framework */,
+				FA552639152A63A4003D9601 /* Foundation.framework */,
+				FA552637152A63A4003D9601 /* UIKit.framework */,
+				FA55265D152A63AE003D9601 /* Cocoa.framework */,
+				FA55265F152A63AE003D9601 /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FA55265F152A63AE003D9601 /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FA552660152A63AE003D9601 /* AppKit.framework */,
+				FA552661152A63AE003D9601 /* CoreData.framework */,
+				FA552662152A63AE003D9601 /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA5526CD152A6451003D9601 /* Mozart */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Mozart" */;
+			buildPhases = (
+				FA5526CA152A6451003D9601 /* Sources */,
+				FA5526CB152A6451003D9601 /* Frameworks */,
+				FA5526CC152A6451003D9601 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Mozart;
+			productName = "Novocaine iOS Example";
+			productReference = FA5526CE152A6451003D9601 /* Mozart.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA55262A152A63A4003D9601 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = "Datta Lab, Harvard University";
+			};
+			buildConfigurationList = FA55262D152A63A4003D9601 /* Build configuration list for PBXProject "Mozart" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FA552628152A63A4003D9601;
+			productRefGroup = FA552634152A63A4003D9601 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA5526CD152A6451003D9601 /* Mozart */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA5526CC152A6451003D9601 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46A01D4F17E1158900DA0EED /* InfoPlist.strings in Resources */,
+				46A01D5017E1158900DA0EED /* ViewController_iPad.xib in Resources */,
+				46A01D5117E1158900DA0EED /* ViewController_iPhone.xib in Resources */,
+				46A01D5B17E1158900DA0EED /* mozart.plist in Resources */,
+				46A01D6017E1158900DA0EED /* TLC.mp3 in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA5526CA152A6451003D9601 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				46A01D4E17E1158900DA0EED /* AppDelegate.mm in Sources */,
+				46A01D5217E1158900DA0EED /* main.m in Sources */,
+				46A01D5317E1158900DA0EED /* FFTBufferManager.cpp in Sources */,
+				46A01D5417E1158900DA0EED /* CADebugMacros.cpp in Sources */,
+				46A01D5517E1158900DA0EED /* CADebugPrintf.cpp in Sources */,
+				46A01D5617E1158900DA0EED /* CAStreamBasicDescription.cpp in Sources */,
+				46A01D5717E1158900DA0EED /* CAXException.cpp in Sources */,
+				46A01D5817E1158900DA0EED /* MZCodec.mm in Sources */,
+				46A01D5917E1158900DA0EED /* MZCodecHelper.cpp in Sources */,
+				46A01D5A17E1158900DA0EED /* NSMutableArray_Shuffling.m in Sources */,
+				46A01D5C17E1158900DA0EED /* AudioFileReader.mm in Sources */,
+				46A01D5D17E1158900DA0EED /* AudioFileWriter.m in Sources */,
+				46A01D5E17E1158900DA0EED /* Novocaine.m in Sources */,
+				46A01D5F17E1158900DA0EED /* RingBuffer.mm in Sources */,
+				46A01D6117E1158900DA0EED /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		46A01D2517E1158900DA0EED /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46A01D2617E1158900DA0EED /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		46A01D2717E1158900DA0EED /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46A01D2817E1158900DA0EED /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+		46A01D2917E1158900DA0EED /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				46A01D2A17E1158900DA0EED /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FA552652152A63A5003D9601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FA552653152A63A5003D9601 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		FA5526E9152A6452003D9601 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "mozart-Prefix.pch";
+				INFOPLIST_FILE = mozart.plist;
+				PRODUCT_NAME = Mozart;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		FA5526EA152A6452003D9601 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "mozart-Prefix.pch";
+				INFOPLIST_FILE = mozart.plist;
+				PRODUCT_NAME = Mozart;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA55262D152A63A4003D9601 /* Build configuration list for PBXProject "Mozart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA552652152A63A5003D9601 /* Debug */,
+				FA552653152A63A5003D9601 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FA5526E8152A6452003D9601 /* Build configuration list for PBXNativeTarget "Mozart" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA5526E9152A6452003D9601 /* Debug */,
+				FA5526EA152A6452003D9601 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA55262A152A63A4003D9601 /* Project object */;
+}
