@@ -21,60 +21,10 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-#import <MediaPlayer/MediaPlayer.h>
-#import "MZCodec.h"
 #import "ViewController.h"
-#import "FFTBufferManager.h"
-#import "aurio_helper.h"
-#import "NSMutableArray_Shuffling.h"
-
-#define ECONDER_MESSAGE @"alfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfa"
-
-#define SAMPLING_FREQUENCY 44100
-#define MIN_FREQ 18800
-#define MAX_FREQ 19800
-
-#define ENCODER_AMPLITUDE_ON  3.0
-#define ENCODER_AMPLITUDE_OFF 0.0
-#define ENCODER_BINS_SIZE     4096
-#define ENCODER_PACKET_REPEAT 4
-#define ENCODER_USE_SILENCE   0
-#define ENCODER_SHUFFLED_VERSIONS 16
-
-#define DECODER_SAMPLE_SIZE 4096
-#define DECODER_HOP_TOLERANCE_PERCENTAGE 0.75
-#define DECODER_OK_REPEAT_REQUIREMENT  2
-#define DECODER_USE_MOVING_AVERAGE  0.0
-
-//#define TEST_PATTERN_1111 0
-//#define TEST_PATTERN_0101 0
-//#define TEST_PATTERN_1010 0
-//#define TEST_PATTERN_1001 0
-//#define TEST_PATTERN_0110 0
-
 
 @interface ViewController ()
 
-//@property(nonatomic,assign)	FFTBufferManager*			fftBufferManager;
-//@property(nonatomic,assign)	DCRejectionFilter*			dcFilter;
-//@property(nonatomic,assign)	Float32*					l_fftData;
-//@property(nonatomic,assign)	Float32*						fftData;
-//@property(nonatomic,assign)	NSUInteger					fftLength;
-//@property(nonatomic,assign)	Boolean                     hasNewFFTData;
-@property(nonatomic,assign) int                     freqHop;
-@property(nonatomic,strong) NSMutableArray         *frequencyHints;
-@property(nonatomic,assign) int                     encoderWaveLength;
-@property(nonatomic,assign) float*                     encoderStream;
-@property(nonatomic,assign) int                     encoderStreamLength;
-@property(nonatomic,assign) int                     lastPacketIndex;
-@property(nonatomic,strong) NSMutableDictionary    *referenceParameters;
-//@property(nonatomic,assign) int                     decoderValids;
-//@property(nonatomic,assign) int                     decoderInvalids;
-//@property(nonatomic,assign) int                     decoderFalsevalids;
-@property(nonatomic,strong) NSMutableDictionary     *receivedPacket;
-//@property(nonatomic,assign) CFAbsoluteTime          decoderInitTime;
-//@property(nonatomic,assign) CFAbsoluteTime          decoderEndTime;
-@property(nonatomic,strong) NSString                *lastReceivedMessage;
 @end
 
 @implementation ViewController

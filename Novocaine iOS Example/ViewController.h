@@ -23,17 +23,9 @@
 
 
 #import <UIKit/UIKit.h>
-#import "Novocaine.h"
-#import "RingBuffer.h"
-#import "AudioFileReader.h"
-#import "AudioFileWriter.h"
 #import "MZCodec.h"
 
 @interface ViewController : UIViewController
-
-
-@property (nonatomic, strong) AudioFileReader *fileReader;
-@property (nonatomic, strong) AudioFileWriter *fileWriter;
 
 
 @property (nonatomic,strong) MZCodec *codec;
