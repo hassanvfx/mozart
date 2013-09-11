@@ -91,15 +91,17 @@
 
 -(void)updateStats{
     
-    float rate1 = ((float)self.codec.decoderFalsevalids/(float)self.codec.decoderValids)*100.0;
-    float rate2 = ((float)self.codec.decoderInvalids/(float)self.codec.decoderValids)*100.0;
+    int total = self.codec.decoderInvalids+self.codec.decoderValids;
+    
+    float rate1 = ((float)self.codec.decoderFalsevalids/(float)total)*100.0;
+    float rate2 = ((float)self.codec.decoderInvalids/(float)total)*100.0;
     
     NSString *letter =self.codec.decoderLastLetter;
     NSString *asserts = [NSString stringWithFormat:@"%d",self.codec.decoderValids];
     NSString *falseAsserts = [NSString stringWithFormat:@"%d",self.codec.decoderFalsevalids];
     NSString *errors = [NSString stringWithFormat:@"%d",self.codec.decoderInvalids];
-    NSString *rate1s = [NSString stringWithFormat:@"%1.2f%%",rate1];
-    NSString *rate2s = [NSString stringWithFormat:@"%1.2f%%",rate2];
+    NSString *rate1s = [NSString stringWithFormat:@"%1.1f%%",rate1];
+    NSString *rate2s = [NSString stringWithFormat:@"%1.1f%%",rate2];
     
    self.statusLetter.text=letter;
     self.statusAsserts1.text=asserts;
