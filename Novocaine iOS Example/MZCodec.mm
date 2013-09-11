@@ -162,6 +162,7 @@
 
 -(void)switch16bitsMode{
     [self resetParameters];
+    [self setPacketDescriptor:[MZCodec descriptor16bits]];
     [self updateFrequenciesTable];
 }
 
