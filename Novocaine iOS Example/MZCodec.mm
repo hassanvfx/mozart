@@ -102,22 +102,7 @@
         
         self.packetDescriptor = [MZCodec descriptor16bits];
         self.parameters=[MZCodecDescriptor new];
-        self.parameters.SAMPLING_FREQUENCY  =   44100 ;
-        self.parameters.MIN_FREQ            =   18800;
-        self.parameters.MAX_FREQ            =   19800;
-        
-        self.parameters.ENCODER_AMPLITUDE_ON        =   3.0;
-        self.parameters.ENCODER_AMPLITUDE_OFF       =   0.0;
-        self.parameters.ENCODER_BINS_SIZE           =   4096;
-        self.parameters.ENCODER_PACKET_REPEAT       =   4;
-        self.parameters.ENCODER_USE_SILENCE         =   0;
-        self.parameters.ENCODER_SHUFFLED_VERSIONS   =   1;
-        
-        self.parameters.DECODER_SAMPLE_SIZE                 =   4096;
-        self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE    =   0.75;
-        self.parameters.DECODER_OK_REPEAT_REQUIREMENT       =   2;
-        self.parameters.DECODER_USE_MOVING_AVERAGE          =   0.0;
-        self.parameters.ENCODER_USE_TEST_PATTERN            =   TEST_PATTERN_OFF;
+        [self resetParameters];
         
         self.encoderStream  =NULL;
         self.audioManager = [Novocaine audioManager];
@@ -129,8 +114,27 @@
     return self;
 }
 
+-(void) resetParameters{
+    self.parameters.SAMPLING_FREQUENCY  =   44100 ;
+    self.parameters.MIN_FREQ            =   18800;
+    self.parameters.MAX_FREQ            =   19800;
+    
+    self.parameters.ENCODER_AMPLITUDE_ON        =   3.0;
+    self.parameters.ENCODER_AMPLITUDE_OFF       =   0.0;
+    self.parameters.ENCODER_BINS_SIZE           =   4096;
+    self.parameters.ENCODER_PACKET_REPEAT       =   4;
+    self.parameters.ENCODER_USE_SILENCE         =   0;
+    self.parameters.ENCODER_SHUFFLED_VERSIONS   =   1;
+    
+    self.parameters.DECODER_SAMPLE_SIZE                 =   4096;
+    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE    =   0.75;
+    self.parameters.DECODER_OK_REPEAT_REQUIREMENT       =   2;
+    self.parameters.DECODER_USE_MOVING_AVERAGE          =   0.0;
+    self.parameters.ENCODER_USE_TEST_PATTERN            =   TEST_PATTERN_OFF;
+}
 
 -(void)switch32bitsMode{
+    [self resetParameters];
     [self setPacketDescriptor:[MZCodec descriptor32bits]];
 //    self.parameters.MIN_FREQ            =   18000;
 //    self.parameters.MAX_FREQ            =   20300;
@@ -154,10 +158,10 @@
     [self updateFrequenciesTable];
 }
 
+
+
 -(void)switch16bitsMode{
-    [self setPacketDescriptor:[MZCodec descriptor32bits]];
-    self.parameters.MIN_FREQ            =   18800;
-    self.parameters.MAX_FREQ            =   19800;
+    [self resetParameters];
     [self updateFrequenciesTable];
 }
 
