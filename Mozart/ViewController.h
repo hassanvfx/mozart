@@ -25,6 +25,8 @@
 #import <UIKit/UIKit.h>
 #import "MZCodec.h"
 
+#define MAX_PACKETS 1 // 1 or 2 for now
+
 @interface ViewController : UIViewController<UITextFieldDelegate>
 
 @property(nonatomic,strong)UILabel IBOutlet *labelResult;
