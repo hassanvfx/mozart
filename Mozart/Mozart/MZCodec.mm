@@ -1327,7 +1327,7 @@
     MZCodecPacketDescriptor *descriptor = self.packetDescriptor;
     NSMutableString *result = [NSMutableString new];
     
-    for (int i=0; i<descriptor.completePacketLenghtBytes*8; i++) {
+    for (int i=0; i< (descriptor.completePacketLenghtBytes*8) -descriptor.partStatusBits; i++) {
         int bit;
         bit= 1 & (packet>>i);
         [result appendString:[NSString stringWithFormat:@"%d",bit]];
