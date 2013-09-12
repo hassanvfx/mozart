@@ -16,10 +16,8 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 #define CODEC_16 16
 #define CODEC_32 32
 
-#define AMPLITUDE_ON_4S 0.5
-#define AMPLITUDE_ON_5  0.5
-
-#define ECONDER_MESSAGE @"alfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfa"
+#define AMPLITUDE_ON_4S 6.0
+#define AMPLITUDE_ON_5  6.0
 
 
 #define TEST_PATTERN_OFF    0
@@ -106,6 +104,7 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 @property(nonatomic,assign) int                     decoderFalsevalids;
 @property(nonatomic,strong) NSString                *decoderLastLetter;
 
+@property(nonatomic,strong) NSString                *decoderlastBitMessage;
 
 -(void)setTestPattern:(int)testPattern;
 

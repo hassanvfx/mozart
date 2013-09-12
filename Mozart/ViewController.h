@@ -30,7 +30,7 @@
 @property(nonatomic,strong)UILabel IBOutlet *labelResult;
 @property(nonatomic,strong)UILabel IBOutlet *labelResultTime;
 @property(nonatomic,strong)UILabel IBOutlet *labelOut;
-@property(nonatomic,strong)UISegmentedControl IBOutlet *tabControl;
+@property(nonatomic,strong)UILabel IBOutlet *labelBits;
 @property(nonatomic,strong)UITextField IBOutlet *textField;
 @property(nonatomic,strong)UISwitch IBOutlet *sendSwitch;
 @property(nonatomic,strong)UISwitch IBOutlet *receiveSwitch;

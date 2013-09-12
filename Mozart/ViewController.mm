@@ -87,6 +87,7 @@
     self.statusRate2.text=@"--";
     self.statusFalseAsserts.text=@"--";
     self.statusErrors.text=@"--";
+    self.labelBits.text=@"--------------------------------";
 }
 
 -(void)updateStats{
@@ -111,21 +112,22 @@
     self.statusRate2.text=rate2s;
     self.statusFalseAsserts.text=falseAsserts;
     self.statusErrors.text=errors;
+      self.labelBits.text=self.codec.decoderlastBitMessage;
 }
 
 -(IBAction) tabChanged{
-    NSLog(@"tabChanged %d",self.tabBarController.selectedIndex);
-    
-    if(self.tabControl.selectedSegmentIndex==0){
-        //iPhone5
-        
-        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_5;
-    }else{
-        //iPhone4s
-        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_4S;
-    }
-      [self.textField resignFirstResponder];
-    [self stopEncoder];
+//    NSLog(@"tabChanged %d",self.tabBarController.selectedIndex);
+//    
+//    if(self.tabControl.selectedSegmentIndex==0){
+//        //iPhone5
+//        
+//        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_5;
+//    }else{
+//        //iPhone4s
+//        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_4S;
+//    }
+//      [self.textField resignFirstResponder];
+//    [self stopEncoder];
     
 }
 -(IBAction) textChanged{
@@ -214,12 +216,13 @@
 
 -(void)runDecoder{
     
-    [self cleartStats];
+    
     
     // INDICATE TO THE DECODER HOW MANY 2 BYTE PACKETS SHOULD EXPECT
     // THIS NEEDS TO MATCH WITH THE NUMBER OF PACKETS SENT!!!
-    int hints =floor(self.outMessage.length/2.0);
-    [self.codec setDecoderExpectedPackets: hints];
+    
+    
+    [self.codec setDecoderExpectedPackets: 2];
     
  
     __block ViewController *wself=self;
@@ -278,7 +281,7 @@
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
     } else {
-        return YES;
+        return NO;
     }
 }
 

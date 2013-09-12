@@ -266,11 +266,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400648154.003385"
+         timestampString = "400656391.798005"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1255"
-         endingLineNumber = "1255"
+         startingLineNumber = "1227"
+         endingLineNumber = "1227"
          landmarkName = "-receivedPacketDone:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -279,12 +279,38 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400648217.231815"
+         timestampString = "400656391.798005"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1105"
-         endingLineNumber = "1105"
+         startingLineNumber = "1081"
+         endingLineNumber = "1081"
          landmarkName = "-unpackData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Mozart/MZCodec.mm"
+         timestampString = "400656391.798005"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1059"
+         endingLineNumber = "1059"
+         landmarkName = "-unpackData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Mozart/MZCodec.mm"
+         timestampString = "400653734.144758"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "933"
+         endingLineNumber = "933"
+         landmarkName = "-prepareDecoder"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
