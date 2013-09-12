@@ -195,9 +195,9 @@
     NSLog(@"runEncoder");
     
     // SET THE DATA TO SEND
-    [self.codec setEncoderData:self.outMessage];
+    [self.codec setEncoderDataString:self.outMessage];
+//    [self.codec setEncoderDataWithLong:(long)1212312];
     
-     
     // IN  CASE OF NEEDED SETUP THE OVERRIDE OF TEST PATTERNS
     // BEFORE THE ENCODER SETUP
 //        [self.codec setTestPattern:TEST_PATTERN_0101];
@@ -233,11 +233,11 @@
         NSString *letter0 =@"??";
         NSString *letter1 =@"??";
         if(packet0){
-            letter0=[packet0 objectForKey:@"letterByte"];
+            letter0=[packet0 objectForKey:@"letter"];
         }
         
         if(packet1){
-            letter1=[packet1 objectForKey:@"letterByte"];
+            letter1=[packet1 objectForKey:@"letter"];
         }
         NSString *result =[NSString stringWithFormat:@"%@%@",letter0,letter1];
         NSString *time = [NSString stringWithFormat:@"%.1fs",wself.codec.decoderDecodingLength];

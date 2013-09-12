@@ -111,7 +111,8 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 +(MZCodecPacketDescriptor*)descriptor16bits;
 +(MZCodecPacketDescriptor*)descriptor32bits;
 -(void)updateFrequenciesTable;
--(void) setEncoderData:(NSString*)data;
+-(void) setEncoderDataString:(NSString*)data;
+-(void) setEncoderDataWithLong:(long)data;
 
 
 -(void)stopEncoder;

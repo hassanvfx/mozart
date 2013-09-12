@@ -182,7 +182,7 @@
 
 -(void)setTestPattern:(int)testPattern{
     self.parameters.ENCODER_USE_TEST_PATTERN=testPattern;
-    [self setEncoderData:@"1234567890123456789012345678901234567890"];
+    [self setEncoderDataString:@"1234567890123456789012345678901234567890"];
 }
 
 -(void)updateFrequenciesTable{
@@ -191,10 +191,19 @@
     free(data);
 }
 
--(void) setEncoderData:(NSString*)data{
+
+-(void) setEncoderDataWithLong:(long)data{
     [self stopEncoder];
     [self resetEncoder ];
-    NSMutableArray *packets =[self packData:data];
+    NSMutableArray *packets =[self packDataLong:data];
+    [self setupPacketsAsEncoderOutput:packets];
+}
+
+
+-(void) setEncoderDataString:(NSString*)data{
+    [self stopEncoder];
+    [self resetEncoder ];
+    NSMutableArray *packets =[self packDataString:data];
     [self setupPacketsAsEncoderOutput:packets];
    
 }
@@ -385,7 +394,17 @@
 
 #pragma mark packer
 
--(NSMutableArray*)packData:(NSString*)data{
+-(NSMutableArray*)packDataString:(NSString*)string{
+    NSData *data= [string dataUsingEncoding:NSUTF8StringEncoding];
+    return [self packDataBytes:data];
+}
+
+-(NSMutableArray*)packDataLong:(long)number{
+    NSData *data= [NSData dataWithBytes:&number length:sizeof(long)];
+    return [self packDataBytes:data];
+}
+
+-(NSMutableArray*)packDataBytes:(NSData*)bytes{
     
     
     NSMutableArray *result= [NSMutableArray new];
@@ -406,7 +425,6 @@
     
     
     
-    NSData *bytes = [data dataUsingEncoding:NSUTF8StringEncoding];
     //--fooo("---------------\n");
     //--fooo("sizeOfData %d\n",bytes.length);
     
@@ -975,6 +993,7 @@
     int status=0;
     
     int bytes =(self.packetDescriptor.partMessageBits/8);
+    int messageBitsLenght = bytes+1;
     char* messageBits=new char[bytes+1];
     messageBits[bytes]='\0';
 //    messageBits[1]='\0';
@@ -1060,11 +1079,12 @@
     
     
     messageBits[bytes]='\0';
-    NSString *packet = [self stringFromPacket:pack];
+//    NSString *packet = [self stringFromPacket:pack];
     //--fooo("CHECKING   %s\n",[packet UTF8String]);
     
 //    NSData *data = [NSData dataWithBytes:messageBits length:(self.packetDescriptor.partMessageBits/8)+1];
     NSString *letter = [[NSString alloc]initWithUTF8String:messageBits];
+    NSData *finalbytes = [NSData dataWithBytes:messageBits length:messageBitsLenght];
     
     self.decoderLastLetter =[letter copy];
     
@@ -1074,11 +1094,9 @@
        && onRealCount!=0
        //       && status
        ){
+ 
         
-       
-        
-        
-        [self didReceive:letter part:index refMessage:refMessageBits refContent:refMessageBitsContent];
+        [self didReceive:finalbytes part:index refMessage:refMessageBits refContent:refMessageBitsContent];
    
         
         //--fooo("VALID   idx %d idxChk %d onBits %d status %d msg %s\n",
@@ -1105,30 +1123,32 @@
 
 
 
--(void)didReceive:(NSString*)letter part:(int)index refMessage:(NSString*)refMessage refContent:(NSString*)refContent{
+-(void)didReceive:(NSData*)bytes part:(int)index refMessage:(NSString*)refMessage refContent:(NSString*)refContent{
     
-    if(letter==nil){
+    if(bytes==nil){
         return;
     }
-    NSString *letterByte=[NSString stringWithString:letter];
-    letter=[NSString stringWithFormat:@">%@-%d-%@<",letter,index,refMessage];
     
-    NSMutableDictionary *part =[self.decoderPackets objectForKey:letter];
+//    NSString *letterByte=[NSString stringWithString:letter];
+    NSString *key=[NSString stringWithFormat:@">%d-%@<",index,refMessage];
+    NSString *refletter = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
+    
+    NSMutableDictionary *part =[self.decoderPackets objectForKey:key];
     if(part==nil){
         //first time
         NSMutableDictionary *part=[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                    [NSNumber numberWithInt:0],@"count",
                                    [NSNumber numberWithInt:index],@"index",
-                                   letter,@"letter",
-                                   [letterByte copy],@"letterByte",
+                                   refletter,@"letter",
+                                   bytes,@"bytes",
                                    refMessage,@"refMessage",
                                    refContent,@"refContent",
                                    nil];
         
-        [self.decoderPackets setObject:part forKey:letter];
+        [self.decoderPackets setObject:part forKey:key];
     }else{
         
-        NSString *oldLetterByes= [part objectForKey:@"letterByte"];
+//        NSString *oldLetterBytes= [part objectForKey:@"letterByte"];
         int oldindex = [[part objectForKey:@"index"]intValue];
         int count = [[part objectForKey:@"count"]intValue];
         
@@ -1153,13 +1173,15 @@
         NSMutableDictionary *partnew=[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithInt:count],@"count",
                                       [NSNumber numberWithInt:index],@"index",
-                                      letter,@"letter",
-                                      [letterByte copy],@"letterByte",
+                                      refletter,@"letter",
+                                      bytes,@"bytes",
+                                      refContent,@"letterByte",
                                       refMessage,@"refMessage",
                                       refContent,@"refContent",
                                       nil];
+
         
-        [self.decoderPackets setObject:partnew forKey:letter];
+        [self.decoderPackets setObject:partnew forKey:key];
         
     }
     
@@ -1255,7 +1277,7 @@
         NSMutableArray *letters=[NSMutableArray new];
         for (int i=0; i<allObjects.count; i++) {
             NSMutableDictionary *part =[allObjects objectAtIndex:i];
-            NSString *letter=[[part objectForKey:@"letterByte"]copy];
+            NSString *letter=[[part objectForKey:@"letter"]copy];
             
             [letters addObject:letter];
         }
