@@ -190,17 +190,23 @@ static Novocaine *audioManager = nil;
 #if !TARGET_IPHONE_SIMULATOR
     UInt32 value = forceOutputToSpeaker ? 1 : 0;
     // should not be fatal error
-    OSStatus err = AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(UInt32), &value);
+    OSStatus err;
+    err= AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(UInt32), &value);
     
-    float value2 = 1.0f;
-    AudioSessionSetProperty(kAudioSessionProperty_CurrentHardwareOutputVolume, sizeof(float), &value2);
-    
+     
     if (err != noErr){
         NSLog(@"Could not override audio output route to speaker");
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:err userInfo:nil];
+        NSLog(@"Error: %@", [error description]);
+
     }
     else{
         _forceOutputToSpeaker = forceOutputToSpeaker;
     }
+    
+
+    
+
 #else
     _forceOutputToSpeaker = forceOutputToSpeaker;
 #endif

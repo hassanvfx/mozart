@@ -16,6 +16,9 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 #define CODEC_16 16
 #define CODEC_32 32
 
+#define AMPLITUDE_ON_4S 0.5
+#define AMPLITUDE_ON_5  0.5
+
 #define ECONDER_MESSAGE @"alfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfaALFAalfa"
 
 

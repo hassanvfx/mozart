@@ -118,10 +118,11 @@
     
     if(self.tabControl.selectedSegmentIndex==0){
         //iPhone5
-        self.codec.parameters.ENCODER_AMPLITUDE_ON=0.45;
+        
+        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_5;
     }else{
         //iPhone4s
-        self.codec.parameters.ENCODER_AMPLITUDE_ON=4.0;
+        self.codec.parameters.ENCODER_AMPLITUDE_ON=AMPLITUDE_ON_4S;
     }
       [self.textField resignFirstResponder];
     [self stopEncoder];
@@ -132,18 +133,23 @@
     [self stopEncoder];
     
 }
+
+-(void)grabOutMessage{
+    NSString *textTosend = self.textField.text;
+    //        NSString * formattedStr = [NSString stringWithFormat:@"%4s", [textTosend UTF8String]];
+    
+    NSString *formattedStr = ([textTosend length]>4 ? [textTosend substringToIndex:4] : textTosend);
+    for (int i=formattedStr.length; i<4; i++) {
+        formattedStr=[NSString stringWithFormat:@"%@ ",formattedStr];
+    }
+    
+    self.outMessage=formattedStr;
+}
+
 -(IBAction) sendChanged{
     NSLog(@"sendChanged");
     if(self.sendSwitch.isOn){
-        NSString *textTosend = self.textField.text;
-//        NSString * formattedStr = [NSString stringWithFormat:@"%4s", [textTosend UTF8String]];
-        
-        NSString *formattedStr = ([textTosend length]>4 ? [textTosend substringToIndex:4] : textTosend);
-        for (int i=formattedStr.length; i<4; i++) {
-            formattedStr=[NSString stringWithFormat:@"%@ ",formattedStr];
-        }
-        
-        self.outMessage=formattedStr;
+        [self grabOutMessage];
         self.labelOut.text=self.outMessage;
         [self runEncoder];
     }else{
@@ -158,6 +164,7 @@
     if(self.receiveSwitch.isOn){
         self.labelResult.text=@"????";
         self.labelResultTime.text=@"~.s";
+        [self grabOutMessage];
         [self runDecoder];
     }else{
         self.labelResult.text=@"----";
@@ -191,7 +198,7 @@
      
     // IN  CASE OF NEEDED SETUP THE OVERRIDE OF TEST PATTERNS
     // BEFORE THE ENCODER SETUP
-    //    [self.codec setTestPattern:TEST_PATTERN_1111];
+//        [self.codec setTestPattern:TEST_PATTERN_0101];
     
     // SETUP ENCODER IF NEEDED
     [self.codec setupEncoder];

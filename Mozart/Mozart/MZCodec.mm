@@ -48,6 +48,8 @@
 @property(nonatomic,strong) NSMutableDictionary     *decoderPackets;
 @property(nonatomic,assign) long                    counter;
 
+@property(nonatomic,assign) Boolean decoderLastPacketWasGood;
+
 //---
 
 
@@ -150,19 +152,19 @@
 //    self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
 //    self.parameters.ENCODER_BINS_SIZE = 4096;  //very important !!
 //    self.parameters.DECODER_SAMPLE_SIZE = 4096*4;  //very important !!
-        
+
     self.parameters.MIN_FREQ            =   18500;
     self.parameters.MAX_FREQ            =   20300;
     self.parameters.ENCODER_PACKET_REPEAT = 64; //very important !!
-    self.parameters.ENCODER_AMPLITUDE_ON  = 0.54; //4 ->iphone4s and //0.45->iphone5S
+    self.parameters.ENCODER_AMPLITUDE_ON  = AMPLITUDE_ON_5; //4 ->iphone4s and //0.45->iphone5S
     self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
     self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
-    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
+    self.parameters.DECODER_USE_MOVING_AVERAGE   =0.0;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
     
     
     self.parameters.ENCODER_BINS_SIZE = 4096;  //very important !!
-    self.parameters.DECODER_SAMPLE_SIZE = 4096*4;  //very important !!
+    self.parameters.DECODER_SAMPLE_SIZE = 4096*8;  //very important !!
     
     [self updateFrequenciesTable];
 }
@@ -892,7 +894,12 @@
                  
                  NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
                  NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
-                 float lastMax =[[hint objectForKey:@"magnitude"]floatValue];
+                float lastMax=[[hint objectForKey:@"magnitude"]floatValue];
+                 float preferedMaxref=0;
+                 NSNumber *lastPrefedMaxRef = [hint objectForKey:@"preferedmaxref"];
+                 if(lastPrefedMaxRef){
+                     preferedMaxref=[lastPrefedMaxRef floatValue];
+                 }
                  
                  int frequency = [frequencyValue intValue];
                  int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
@@ -912,12 +919,24 @@
                      }
                  }
                  
+                 
+                 //learning
+                 float randomPart=((float)(arc4random()%1600)/1600.0);
+//                 float maxref=0.03-(0.01* ((float)i/wself.codecFrequenciesTable.count));
+                 
+                 
+                 float maxref=1.0 ;
+                 if((int)preferedMaxref){
+                     maxref=preferedMaxref;
+                 }
                 //--fooo("---------- max= %f\n",max);
                  
-//                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
+                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
                  [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
+                 [hint setObject:[NSNumber numberWithFloat:maxref] forKey:@"lastmaxref"];
                  
-                 float maxref=1.0;
+                 
+                 printf("%f maxref= %f\n ",max,maxref);
                  
                  if(max> maxref){
                      BIT_SET(packet, i);
@@ -931,15 +950,37 @@
              }
 //             [self //--fooorequencytable];
              
-             NSString *bitMessage = [self stringFromPacket:packet];
-             //--fooo("---------- result= %s\n",[bitMessage UTF8String]);
+             
+           
+             
+             NSString *bitMessage = [wself stringFromPacket:packet];
+             printf("---------- result= %s\n",[bitMessage UTF8String]);
+             
+             
              
              char *letter = [wself unpackData:packet];
-             [self testQuality:bitMessage letter:letter];
+             [wself testQuality:bitMessage letter:letter];
              
              
-             if(self.decoderLetterCallback){
-                 self.decoderLetterCallback();
+             if(wself.decoderLastPacketWasGood){
+                 for( int i=0; i<wself.codecFrequenciesTable.count;i++){
+                     
+                     NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
+                     float lastmaxref =[[hint objectForKey:@"lastmaxref"]floatValue];
+                     
+                     NSNumber *lastPrefedMaxRef = [hint objectForKey:@"preferedmaxref"];
+                     if(lastPrefedMaxRef){
+                         lastmaxref=[lastPrefedMaxRef floatValue]*0.5 +lastmaxref*0.5;
+                     }
+                     
+                     [hint setObject:[NSNumber numberWithFloat:lastmaxref] forKey:@"preferedmaxref"];
+                     
+                 }
+             }
+             wself.decoderLastPacketWasGood=NO;
+             
+             if(wself.decoderLetterCallback){
+                 wself.decoderLetterCallback();
              }
          }
          
@@ -1050,8 +1091,9 @@
     
     self.decoderLastLetter =[letter copy];
     
-    if(index==( (descriptor.maxPacketsNumber-1)-indexInverted)
-       &&
+    if(
+//       index==( (descriptor.maxPacketsNumber-1)-indexInverted)
+//       &&
        onRealCount==onCount
        && onRealCount!=0
        //       && status
@@ -1092,6 +1134,8 @@
     if(letter==nil){
         return;
     }
+    
+     
     NSString *letterByte=[NSString stringWithString:letter];
     letter=[NSString stringWithFormat:@">%@-%d-%@<",letter,index,refMessage];
     
@@ -1126,6 +1170,8 @@
 //            return;
 //        }
         if(oldindex==index){
+            self.decoderLastPacketWasGood=YES;
+            
             ++count;
         }else{
             count=0;
