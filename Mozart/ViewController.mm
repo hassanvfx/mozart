@@ -92,10 +92,10 @@
 
 -(void)updateStats{
     
-    int total = self.codec.decoderInvalids+self.codec.decoderValids;
-    int total2 = self.codec.decoderFalsevalids+self.codec.decoderValids;
+    int total = self.codec.decoderInvalids+self.codec.decoderValids+self.codec.decoderFalsevalids;
+//    int total2 = self.codec.decoderFalsevalids+self.codec.decoderValids;
     
-    float rate1 = ((float)self.codec.decoderFalsevalids/(float)total2)*100.0;
+    float rate1 = ((float)self.codec.decoderFalsevalids/(float)total)*100.0;
     float rate2 = ((float)self.codec.decoderInvalids/(float)total)*100.0;
     
     NSString *letter =self.codec.decoderLastLetter;
@@ -140,8 +140,8 @@
     NSString *textTosend = self.textField.text;
     //        NSString * formattedStr = [NSString stringWithFormat:@"%4s", [textTosend UTF8String]];
     
-    NSString *formattedStr = ([textTosend length]>4 ? [textTosend substringToIndex:4] : textTosend);
-    for (int i=formattedStr.length; i<4; i++) {
+    NSString *formattedStr = ([textTosend length]>MAX_PACKETS*2 ? [textTosend substringToIndex:MAX_PACKETS*2] : textTosend);
+    for (int i=formattedStr.length; i<MAX_PACKETS*2; i++) {
         formattedStr=[NSString stringWithFormat:@"%@ ",formattedStr];
     }
     
@@ -222,7 +222,7 @@
     // THIS NEEDS TO MATCH WITH THE NUMBER OF PACKETS SENT!!!
     
     
-    [self.codec setDecoderExpectedPackets: 2];
+    [self.codec setDecoderExpectedPackets: MAX_PACKETS];
     
  
     __block ViewController *wself=self;

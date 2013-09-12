@@ -49,6 +49,7 @@
 @property(nonatomic,assign) long                    counter;
 
 @property(nonatomic,assign) float                   lastMean;
+@property(nonatomic,assign) float                   lastBelowMean;
 @property(nonatomic,assign) float                   lastMin;
 
 //---
@@ -736,6 +737,10 @@
         
         
         float a = amplitude/L;
+        
+        
+        
+        
         //        if((int)i%2==0)a=a*0.0;
         
         
@@ -784,6 +789,7 @@
     
     vDSP_zvphas (&A, 1, phase, 1, L/2);
     phase[0] = 0;
+    
     
     
     //create a wave from phase and magnitude
@@ -892,6 +898,7 @@
              int packet =0;
              double mean=0;
              double min=10000000;
+             int belowMeancount =0;
              
              for( int i=0; i<wself.codecFrequenciesTable.count;i++){
                  
@@ -926,8 +933,17 @@
 //                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
                  [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
                  
+                 // hass
                  float lowPart  = wself.lastMean - wself.lastMin;
                  float lowVal   = wself.lastMin + (lowPart*(1.0/wself.codecFrequenciesTable.count));
+                 
+                 //harsh
+//                 if(max<wself.lastMean){
+//                     belowMeancount++;
+//                 }
+//                 float lowPart  = wself.lastMean - wself.lastMin;
+//                 float lowVal   = wself.lastMin + (wself.lastBelowMean*(lowPart/wself.codecFrequenciesTable.count));
+                 
                  float maxref=lowVal;
                  
                  printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
@@ -944,6 +960,7 @@
              mean=mean/wself.codecFrequenciesTable.count;
              wself.lastMean =mean;
              wself.lastMin  =min;
+             wself.lastBelowMean = belowMeancount;
 //             mean=mean/wself.codecFrequenciesTable.count;
              
 //             [self //--fooorequencytable];
