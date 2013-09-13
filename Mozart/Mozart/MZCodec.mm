@@ -161,7 +161,7 @@
     self.parameters.ENCODER_PACKET_REPEAT = 16; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = AMPLITUDE_ON_5; //4 ->iphone4s and //0.45->iphone5S
     self.parameters.ENCODER_SHUFFLED_VERSIONS = 8;
-    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =4;
+    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
     self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
     
