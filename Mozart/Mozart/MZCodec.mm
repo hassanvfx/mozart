@@ -348,14 +348,14 @@
             
             [packets shuffle];
             
-            NSLog(@"-------->shuffle");
+//            NSLog(@"-------->shuffle");
             for (int i=0; i<self.encoderLastValidPacketIndex ; i++) {
                 
                 float *waveBytes;
                 NSDictionary *packet =[packets objectAtIndex:i];
                 NSData *waveForm = [packet objectForKey:@"waveform"];
                 int partIndex = [[packet objectForKey:@"index"]intValue];
-                NSLog(@"appending partindex %d",partIndex);
+//                NSLog(@"appending partindex %d",partIndex);
                 
                 waveBytes = new float[self.parameters.ENCODER_WAVE_LENGHT];
                 [waveForm getBytes:waveBytes];
@@ -402,10 +402,35 @@
 
 -(NSMutableArray*)packDataLong:(long)number{
     NSData *data= [NSData dataWithBytes:&number length:sizeof(long)];
+    unsigned char *b = new unsigned char[4]  ;
+     unsigned char *b2 = new unsigned char[4]  ;
+    unsigned char *p = (unsigned char *) &number;
+    b[0] = p[3];
+    b[1] = p[2];
+    b[2] = p[1];
+    b[3] = p[0];
+    long test ;
+    
+//    NSString *tests= [[NSString alloc]initWithBytes:&b length:4 encoding:NSUTF8StringEncoding];
+//    NSData *bytes = [tests dataUsingEncoding:NSUTF8StringEncoding];
+//    [bytes getBytes:&b2 length:4];
+    b2=b;
+    
+    test = ((unsigned long)b2[0] << 24) |
+    ((unsigned long)b2[1] << 16) |
+    ((unsigned long)b2[2] << 8) |
+    ((unsigned long)b2[3]);
+
+
+    
+//    long test;
+//    [data getBytes:&test length:sizeof(long)];
+    
     return [self packDataBytes:data];
 }
 
 -(NSMutableArray*)packDataBytes:(NSData*)bytes{
+    
     
     
     NSMutableArray *result= [NSMutableArray new];
@@ -427,63 +452,42 @@
     
     
     //--fooo("---------------\n");
-    //--fooo("sizeOfData %d\n",bytes.length);
+    int l=bytes.length;
+    printf("sizeOfData %d\n",l);
     
-    int maxBytes =(int) fmin( bytes.length, maxMessageBytes);
+    int maxBytes =(int) MIN(l, maxMessageBytes);
     //--fooo("data trunc to %d\n",maxBytes);
     
     //create the max output and pad with zeros
-    char *output=new char[maxMessageBytes];
-    
-    //fill the output with zeros
-    for (int i=0; i<maxMessageBytes; i++) {
-        output[i]=0;
-    }
-    
+    unsigned char *output=new unsigned char[maxBytes+1];
     [bytes getBytes:output length:maxBytes];
+   long test ;
     
-    //log each character as bytes
+    //check long integrity
+    test = ((unsigned long)output[3] << 24) |
+    ((unsigned long)output[2] << 16) |
+    ((unsigned long)output[1] << 8) |
+    ((unsigned long)output[0]);
     
-    if(descriptor.numberOfSamples ==16){
-        for (int i=0; i<maxPacketsNumber; i++) {
+ 
+        for (int i=0; i<maxBytes; i++) {
             char c = output[i];
-            //--fooo("%2d = %c ",i,output[i]);
-            for (int i=0; i<8; i++) {
-                if(BIT_CHECK(c, i)){
-                    //--fooo("1");
+            printf("%2d = %c ",i,output[i]);
+            for (int j=0; j<8; j++) {
+                if(BIT_CHECK(c, j)){
+                    BIT_SET(test, j*i);
+                    printf("1");
                 }else{
-                    //--fooo("0");
+                    printf("0");
                 }
                 
             }
-            //--fooo("\n");
+           printf("\n");
         }
-    }else{
-        for (int i=0; i<maxPacketsNumber; i++) {
-//            char c1 = output[i*2];
-//            char c2 = output[i*2+1];
-//            //--fooo("%2d = %c%c ",i,c1,c2);
-//
-//            for (int j=0; j<8; j++) {
-//                if(BIT_CHECK(c1, j)){
-//                    //--fooo("1");
-//                }else{
-//                    //--fooo("0");
-//                }
-//                
-//            }
-//            for (int j=0; j<8; j++) {
-//                if(BIT_CHECK(c2, j)){
-//                    //--fooo("1");
-//                }else{
-//                    //--fooo("0");
-//                }
-//                
-//            }
-            //--fooo("\n");
-        }
-        
-    }
+    
+
+
+   
     
     
     //    //--fooo("input %s\n",input);
@@ -499,7 +503,7 @@
     
     for(int i=0;i< requiredPackets;i++){
         
-        char *packetData = new char[partMessageBits/8];
+        char *packetData = new char[ (partMessageBits/8)+1];
         
         int startBytes = i*(partMessageBits/8);
         
@@ -511,7 +515,10 @@
         }
         
         //        memcpy(packetData, output+(i*messageBytesPerPacket), 2*sizeof(char));
-        //--fooo("packet %d content ''%c%c''\n",i,packetData[0],packetData[1]);
+        NSData *test =[NSData dataWithBytes:packetData length:3];
+        NSString *test2 = [self bitStringContentFromData:test];
+        printf("packet %d content ''%c%c' %s'\n",i,packetData[0],packetData[1],[test2 UTF8String]);
+        
         
         int highbitsCount=0;
         //--fooo("message part > ");
@@ -644,7 +651,7 @@
         NSString *outputref = [self stringFromPacket:finalPacket];
         [self.encoderBitReferenceDictionary setObject:outputref forKey:outputref];
         
-        //--fooo("%s \n",[outputref UTF8String]);
+        printf("%d -> %s \n",i,[outputref UTF8String]);
         //--fooo("---------------\n");
         
         //CREATE THE ENCODED WAVEFROM
@@ -964,7 +971,7 @@
                  
                  float maxref=lowVal;
                  
-                 printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
+//                 printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
                  if(max> maxref){
                      BIT_SET(packet, i);
                       [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
@@ -984,7 +991,7 @@
 //             [self //--fooorequencytable];
              
              NSString *bitMessage = [wself stringFromPacket:packet];
-             printf("---------- result= %s\n",[bitMessage UTF8String]);
+//             printf("---------- result= %s\n",[bitMessage UTF8String]);
              wself.decoderlastBitMessage=bitMessage;
              
              char *letter = [wself unpackData:packet];
@@ -1084,7 +1091,7 @@
             //            [refMessageBits appendString:@"0"];
         }
         position++;
-    }
+    }   
     
     //---
     
@@ -1095,20 +1102,28 @@
     }
     
     
-    messageBits[bytes]='\0';
+  
 //    NSString *packet = [self stringFromPacket:pack];
     //--fooo("CHECKING   %s\n",[packet UTF8String]);
     
 //    NSData *data = [NSData dataWithBytes:messageBits length:(self.packetDescriptor.partMessageBits/8)+1];
     NSString *letter = [[NSString alloc]initWithUTF8String:messageBits];
-    NSData *finalbytes = [NSData dataWithBytes:messageBits length:messageBitsLenght];
+    NSData *finalbytes = [NSData dataWithBytes:messageBits length:messageBitsLenght-1];
+    
+    NSString *letterByte=[self bitStringContentFromData:finalbytes];
     
     self.decoderLastLetter =[letter copy];
     
-    if(index==( (descriptor.maxPacketsNumber-1)-indexInverted)
+    Boolean secondPacketIsOff =false;
+    if( onRealCount==0 && onCount==0 && index==1){
+        secondPacketIsOff=true;
+    }
+    
+    if( (index==( (descriptor.maxPacketsNumber-1)-indexInverted)
        &&
        onRealCount==onCount
        && onRealCount!=0
+         ) || secondPacketIsOff
        //       && status
        ){
  
@@ -1146,9 +1161,13 @@
         return;
     }
     
-//    NSString *letterByte=[NSString stringWithString:letter];
+    NSString *letterByte=[self bitStringContentFromData:bytes];
+    
     NSString *key=[NSString stringWithFormat:@">%d-%@<",index,refMessage];
     NSString *refletter = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
+    if(refletter==nil){
+        refletter=@"  ";
+    }
     
     NSMutableDictionary *part =[self.decoderPackets objectForKey:key];
     if(part==nil){
@@ -1192,7 +1211,6 @@
                                       [NSNumber numberWithInt:index],@"index",
                                       refletter,@"letter",
                                       bytes,@"bytes",
-                                      refContent,@"letterByte",
                                       refMessage,@"refMessage",
                                       refContent,@"refContent",
                                       nil];
@@ -1262,6 +1280,8 @@
 
 
 -(void)receivedPacketDone:(NSDictionary*)byIndex{
+    
+    
     if(self.decoderEndTime==-1){
         NSLog(@"packet received");
         self.decoderDecodingLength = CFAbsoluteTimeGetCurrent()-self.decoderInitTime;
@@ -1291,15 +1311,39 @@
         NSSortDescriptor *aSortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"index" ascending:YES];
         [allObjects sortUsingDescriptors:[NSArray arrayWithObject:aSortDescriptor]];
         
+        NSMutableData *finalBytes = [NSMutableData new];
+        
+        
         NSMutableArray *letters=[NSMutableArray new];
         for (int i=0; i<allObjects.count; i++) {
             NSMutableDictionary *part =[allObjects objectAtIndex:i];
             NSString *letter=[[part objectForKey:@"letter"]copy];
+            NSData *data =[part objectForKey:@"bytes"];
             
+            NSString *check =[self bitStringContentFromData:data];
+            
+            [finalBytes appendData:data];
+            if (letter==nil) {
+                letter=@"  ";
+            }
+            
+            printf("%d -> %s |%d\n",i,[check UTF8String],finalBytes.length);
             [letters addObject:letter];
         }
         
+        
         NSString *content =[letters componentsJoinedByString:@""];
+        
+        unsigned char buffer[4];
+        [finalBytes getBytes:&buffer length:4];
+        
+        long test = ((unsigned long)buffer[3] << 24) |
+        ((unsigned long)buffer[2] << 16) |
+        ((unsigned long)buffer[1] << 8) |
+        ((unsigned long)buffer[0]);
+       
+        
+        self.decoderReceivedLong = test;
         self.decoderReceivedMessage = content;
         self.decoderReceivedMessageBits = [self stringFromPacket:1];
         self.decoderReceivedBuffer=nil;
@@ -1384,6 +1428,47 @@
     
 }
 
+//-(NSString*)bitStringFromData:(NSData*)data{
+//    
+//    MZCodecPacketDescriptor *descriptor = self.packetDescriptor;
+//    NSMutableString *result = [NSMutableString new];
+//    int packet;
+//    [data getBytes:&packet length:sizeof(int)];
+//    
+//    for (int i=0; i< (descriptor.completePacketLenghtBytes*8) -descriptor.partStatusBits; i++) {
+//        int bit;
+//        bit= 1 & (packet>>i);
+//        [result appendString:[NSString stringWithFormat:@"%d",bit]];
+//        
+//        
+//        if( i+1==descriptor.partIndexBits ||
+//           i+1==descriptor.partIndexBits+descriptor.partMessageBits ||
+//           i+1==descriptor.partIndexBits+descriptor.partMessageBits+descriptor.partChecksumBits ||
+//           i+1==descriptor.partIndexBits+descriptor.partMessageBits+descriptor.partChecksumBits+descriptor.partIndexNegBits){
+//            [result appendString:@" "];
+//        }
+//    }
+//    
+//    return  result;
+//    
+//}
 
+-(NSString*)bitStringContentFromData:(NSData*)data{
+    
+    MZCodecPacketDescriptor *descriptor = self.packetDescriptor;
+    NSMutableString *result = [NSMutableString new];
+    int packet;
+    [data getBytes:&packet length:sizeof(int)];
+    
+    for (int i=0; i< (descriptor.partMessageBits) ; i++) {
+        int bit;
+        bit= 1 & (packet>>i);
+        [result appendString:[NSString stringWithFormat:@"%d",bit]];
+
+    }
+    
+    return  result;
+    
+}
 
 @end

@@ -25,7 +25,7 @@
 #import <UIKit/UIKit.h>
 #import "MZCodec.h"
 
-#define MAX_PACKETS 1 // 1 or 2 for now
+#define MAX_PACKETS 2 // 1 or 2 for now
 
 @interface ViewController : UIViewController<UITextFieldDelegate>
 

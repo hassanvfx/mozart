@@ -93,6 +93,7 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 @property(nonatomic,strong)MZCodecDescriptor  *parameters;
 @property(nonatomic,strong)MZCodecPacketDescriptor  *packetDescriptor;
 @property(nonatomic,strong)NSString  *decoderReceivedMessage;
+@property(nonatomic,assign)long      decoderReceivedLong;
 @property(nonatomic,strong)NSString  *decoderReceivedMessageBits;
 @property(nonatomic,assign)int       *decoderReceivedBuffer;
 @property(nonatomic,assign)CFAbsoluteTime decoderDecodingLength;

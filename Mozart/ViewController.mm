@@ -196,7 +196,7 @@
     
     // SET THE DATA TO SEND
     [self.codec setEncoderDataString:self.outMessage];
-//    [self.codec setEncoderDataWithLong:(long)1212312];
+//    [self.codec setEncoderDataWithLong:(long)10];
     
     // IN  CASE OF NEEDED SETUP THE OVERRIDE OF TEST PATTERNS
     // BEFORE THE ENCODER SETUP
@@ -252,9 +252,10 @@
     
     
     [self.codec setDecoderCallback:^(void) {
-        NSString *messaget = [NSString stringWithFormat:@"did receive %@ in %0.1f",
+        NSString *messaget = [NSString stringWithFormat:@"did receive '%@' in %0.1f (or long val %ld)",
                               wself.codec.decoderReceivedMessage,
-                              wself.codec.decoderDecodingLength
+                              wself.codec.decoderDecodingLength,
+                              wself.codec.decoderReceivedLong
                               ];
         [wself showMessage:messaget];
         [wself stopDecoder];

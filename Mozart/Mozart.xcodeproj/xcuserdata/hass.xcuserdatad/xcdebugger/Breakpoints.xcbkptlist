@@ -266,12 +266,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400712183.612169"
+         timestampString = "400726786.336925"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1249"
-         endingLineNumber = "1249"
-         landmarkName = "-receivedPacketDone:"
+         startingLineNumber = "1267"
+         endingLineNumber = "1267"
+         landmarkName = "-checkPacketStatus"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -279,11 +279,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400714300.059079"
+         timestampString = "400726403.406491"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1099"
-         endingLineNumber = "1099"
+         startingLineNumber = "1106"
+         endingLineNumber = "1106"
          landmarkName = "-unpackData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -292,11 +292,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400714300.059079"
+         timestampString = "400726403.406491"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1078"
-         endingLineNumber = "1078"
+         startingLineNumber = "1085"
+         endingLineNumber = "1085"
          landmarkName = "-unpackData:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -305,11 +305,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400714300.059079"
+         timestampString = "400726403.406491"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "951"
-         endingLineNumber = "951"
+         startingLineNumber = "958"
+         endingLineNumber = "958"
          landmarkName = "-prepareDecoder"
          landmarkType = "5">
       </FileBreakpoint>
@@ -318,12 +318,51 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Mozart/MZCodec.mm"
-         timestampString = "400712183.612169"
+         timestampString = "400726786.336925"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "1307"
-         endingLineNumber = "1307"
-         landmarkName = "-testQuality:letter:"
+         startingLineNumber = "1166"
+         endingLineNumber = "1166"
+         landmarkName = "-didReceive:part:refMessage:refContent:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Mozart/MZCodec.mm"
+         timestampString = "400726786.336925"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1122"
+         endingLineNumber = "1122"
+         landmarkName = "-unpackData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Mozart/MZCodec.mm"
+         timestampString = "400726786.336925"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "1131"
+         endingLineNumber = "1131"
+         landmarkName = "-unpackData:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Mozart/MZCodec.mm"
+         timestampString = "400726462.03363"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "461"
+         endingLineNumber = "461"
+         landmarkName = "-packDataBytes:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
@@ -334,6 +373,34 @@
          continueAfterRunningActions = "No"
          symbolName = "malloc_error_break"
          moduleName = "">
+      </SymbolicBreakpoint>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "objc_exception_throw"
+         moduleName = "">
+      </SymbolicBreakpoint>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "[NSArray insertObject:atIndex]"
+         moduleName = "">
+      </SymbolicBreakpoint>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "[_NSArrayM insertObject:atIndex]"
+         moduleName = "">
+      </SymbolicBreakpoint>
+      <SymbolicBreakpoint
+         shouldBeEnabled = "Yes"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         symbolName = "[__NSArrayM insertObject:atIndex:]"
+         moduleName = "CoreFoundation`">
       </SymbolicBreakpoint>
    </SymbolicBreakpoints>
    <ExceptionBreakpoints>
