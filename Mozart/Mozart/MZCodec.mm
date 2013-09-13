@@ -91,7 +91,7 @@
     
     descriptor.completePacketLenghtBytes       = 4;
     descriptor.completePacketLenghtBits        = descriptor.completePacketLenghtBytes*8;
-    descriptor.maxPacketsNumber                = 16;
+    descriptor.maxPacketsNumber                = 2;
     
     descriptor.maxMessageBytes                 = ( descriptor.partMessageBits/8)* descriptor.maxPacketsNumber;
     descriptor.maxMessageBits                  =  descriptor.maxMessageBytes*8;
@@ -158,9 +158,9 @@
         
     self.parameters.MIN_FREQ            =   18500;
     self.parameters.MAX_FREQ            =   20300;
-    self.parameters.ENCODER_PACKET_REPEAT = 16; //very important !!
+    self.parameters.ENCODER_PACKET_REPEAT = 32; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = AMPLITUDE_ON_5; //4 ->iphone4s and //0.45->iphone5S
-    self.parameters.ENCODER_SHUFFLED_VERSIONS = 8;
+    self.parameters.ENCODER_SHUFFLED_VERSIONS = 1;
     self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
     self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
@@ -895,11 +895,13 @@
                 max=magnitude;
             }
             
-            if (magnitude<min) {
-                min=magnitude;
-            }
+            
         }
-        
+    
+    if (max<min) {
+        min=max;
+    }
+    
        [hint setObject:[NSNumber numberWithFloat:max] forKey:@"lastpeak"];
         
         
@@ -946,11 +948,12 @@
          
        
         if(peak>= thershold){
+//        if(peak >wself.lastMean){
             BIT_SET(packet, i);
-            [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
+            [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
         }else{
             BIT_CLEAR(packet, i);
-            [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
+            [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
         }
       
         
@@ -1299,6 +1302,7 @@
     
     int totalPackets=self.decoderExpectedPackets;
     int okPerPacket=self.parameters.DECODER_OK_REPEAT_REQUIREMENT;
+    int okPerHints=self.parameters.ENCODER_PACKET_REPEAT/4;
     int ok=0;
     
     NSArray *allKeys = [self.decoderPackets allKeys];
@@ -1309,17 +1313,20 @@
       
         ///// CHECK IF THE PACKET CONTENT HAS CAME BEFORE
         ///// IF THE PACKET HAD CAME BEFORE, ADD THIS CONTRIBUTIONS TO THE FULL PACKET
+        int hintCount =0;
         NSString *refcontentkey = [part objectForKey:@"refContent"];
         NSMutableDictionary *contentHint = [self.decodedContents objectForKey:refcontentkey];
         if(contentHint!=nil){
-            int hintcount = [[contentHint objectForKey:@"count"]intValue];
-            count+=hintcount;
-            printf("%s hintcount = %d\n",[refcontentkey UTF8String],hintcount);
+            hintCount = [[contentHint objectForKey:@"count"]intValue];
+            
+            printf("%s hintcount = %d\n",[refcontentkey UTF8String],hintCount);
         }
-        
+        if( hintCount >= okPerHints){
+            count+=(okPerPacket/2);
+        }
         count=fmin(count, okPerPacket   );
         
-        if(count>=okPerPacket){
+        if(count>=okPerPacket ){
             [part setObject:@1 forKey:@"locked"];
             ok++;
         }
