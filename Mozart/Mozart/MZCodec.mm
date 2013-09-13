@@ -157,16 +157,16 @@
         
     self.parameters.MIN_FREQ            =   18500;
     self.parameters.MAX_FREQ            =   20300;
-    self.parameters.ENCODER_PACKET_REPEAT = 64; //very important !!
+    self.parameters.ENCODER_PACKET_REPEAT = 32; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = AMPLITUDE_ON_5; //4 ->iphone4s and //0.45->iphone5S
-    self.parameters.ENCODER_SHUFFLED_VERSIONS =16;
+    self.parameters.ENCODER_SHUFFLED_VERSIONS =4;
     self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
     self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
     
     
     self.parameters.ENCODER_BINS_SIZE = 4096;  //very important !!
-    self.parameters.DECODER_SAMPLE_SIZE = 4096*4;  //very important !!
+    self.parameters.DECODER_SAMPLE_SIZE = 4096*2;  //very important !!
     
     [self updateFrequenciesTable];
 }
@@ -860,11 +860,111 @@
     
 }
 
+-(void)preprocessFrequency{
+    
+      __weak MZCodec * wself = self;
+    
+    float binWidth = wself.fftLength /((float) wself.parameters.SAMPLING_FREQUENCY/(float)2);
+    float freqSearchWindow = wself.freqHop* wself.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE;
+    
+    
+    double mean=0;
+    double min=10000000;
+    
+    for( int i=0; i<wself.codecFrequenciesTable.count;i++){
+        
+        NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
+        NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
+         
+        int frequency = [frequencyValue intValue];
+        int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
+        int freqWindowEndsAt   = frequency + (freqSearchWindow/2);
+        
+        int binStarts = binWidth*freqWindowBeginsAt;
+        int binEnds = binWidth*freqWindowEndsAt;
+        
+        float max =0;
+        
+        for (int i=binStarts; i<=binEnds; i++) {
+            
+            float magnitude =wself.fftData[i];
+            //                     max+=magnitude;
+            if(magnitude>max){
+                max=magnitude;
+            }
+            
+            if (magnitude<min) {
+                min=magnitude;
+            }
+        }
+        
+       [hint setObject:[NSNumber numberWithFloat:max] forKey:@"lastpeak"];
+        
+        
+        mean+=max;
+        
+    }
+    mean=mean/wself.codecFrequenciesTable.count;
+    wself.lastMean =mean;
+    wself.lastMin  =min;
+    
+    
+    int belowMeancount =0;
+    
+    for( int i=0; i<wself.codecFrequenciesTable.count;i++){
+        
+        NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
+        float peak =[[hint objectForKey:@"lastpeak"]floatValue];
+        if(peak<mean){
+            ++belowMeancount;
+        }
+       
+    }
+    
+    wself.lastBelowMean = belowMeancount;
+    
+}
+
+-(int)processFrequency{
+    
+    
+    __weak MZCodec * wself = self;
+    
+    
+    int packet =0;
+    
+    for( int i=0; i<wself.codecFrequenciesTable.count;i++){
+        
+        NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
+        float peak =[[hint objectForKey:@"lastpeak"]floatValue];
+        
+        
+        float lowPart  = wself.lastMean - wself.lastMin;
+        float thershold   = wself.lastMin + (lowPart/wself.lastBelowMean);
+         
+       
+        if(peak>= thershold){
+            BIT_SET(packet, i);
+            [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
+        }else{
+            BIT_CLEAR(packet, i);
+            [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
+        }
+      
+        
+    }
+    
+    return packet;
+   
+    
+}
+
 -(void)prepareDecoder{
     
     __weak MZCodec * wself = self;
     
-        
+    
+    
     [self.audioManager setInputBlock:^(float *data, UInt32 numFrames, UInt32 numChannels)
      {
          
@@ -917,76 +1017,80 @@
              
              
              
-             float binWidth = wself.fftLength /((float) wself.parameters.SAMPLING_FREQUENCY/(float)2);
-             float freqSearchWindow = wself.freqHop* wself.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE;
-
-             int packet =0;
-             double mean=0;
-             double min=10000000;
-             int belowMeancount =0;
-             
-             for( int i=0; i<wself.codecFrequenciesTable.count;i++){
-                 
-                 NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
-                 NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
-                 float lastMax =[[hint objectForKey:@"magnitude"]floatValue];
-                 
-                 int frequency = [frequencyValue intValue];
-                 int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
-                 int freqWindowEndsAt   = frequency + (freqSearchWindow/2);
-                 
-                 int binStarts = binWidth*freqWindowBeginsAt;
-                 int binEnds = binWidth*freqWindowEndsAt;
-                 
-                 float max =0;
-                 
-                 for (int i=binStarts; i<=binEnds; i++) {
-                     
-                     float magnitude =wself.fftData[i];
-                     //                     max+=magnitude;
-                     if(magnitude>max){
-                         max=magnitude;
-                     }
-                     
-                     if (magnitude<min) {
-                         min=magnitude;
-                     }
-                 }
-                 
-                //--fooo("---------- max= %f\n",max);
-                 
-//                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
-                 [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
-                 
-                 // hass
-                 float lowPart  = wself.lastMean - wself.lastMin;
-                 float lowVal   = wself.lastMin + (lowPart*(1.0/wself.codecFrequenciesTable.count));
-                 
-                 //harsh
-//                 if(max<wself.lastMean){
-//                     belowMeancount++;
+//             float binWidth = wself.fftLength /((float) wself.parameters.SAMPLING_FREQUENCY/(float)2);
+//             float freqSearchWindow = wself.freqHop* wself.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE;
+//
+//             int packet =0;
+//             double mean=0;
+//             double min=10000000;
+//             int belowMeancount =0;
+//             
+//             for( int i=0; i<wself.codecFrequenciesTable.count;i++){
+//                 
+//                 NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
+//                 NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
+//                 float lastMax =[[hint objectForKey:@"magnitude"]floatValue];
+//                 
+//                 int frequency = [frequencyValue intValue];
+//                 int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
+//                 int freqWindowEndsAt   = frequency + (freqSearchWindow/2);
+//                 
+//                 int binStarts = binWidth*freqWindowBeginsAt;
+//                 int binEnds = binWidth*freqWindowEndsAt;
+//                 
+//                 float max =0;
+//                 
+//                 for (int i=binStarts; i<=binEnds; i++) {
+//                     
+//                     float magnitude =wself.fftData[i];
+//                     //                     max+=magnitude;
+//                     if(magnitude>max){
+//                         max=magnitude;
+//                     }
+//                     
+//                     if (magnitude<min) {
+//                         min=magnitude;
+//                     }
 //                 }
+//                 
+//                //--fooo("---------- max= %f\n",max);
+//                 
+////                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
+//                 [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
+//                 
+//                 // hass
 //                 float lowPart  = wself.lastMean - wself.lastMin;
-//                 float lowVal   = wself.lastMin + (wself.lastBelowMean*(lowPart/wself.codecFrequenciesTable.count));
-                 
-                 float maxref=lowVal;
-                 
-//                 printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
-                 if(max> maxref){
-                     BIT_SET(packet, i);
-                      [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
-                 }else{
-                     BIT_CLEAR(packet, i);
-                      [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
-                 }
-                 mean+=max;
- 
-             }
-             mean=mean/wself.codecFrequenciesTable.count;
-             wself.lastMean =mean;
-             wself.lastMin  =min;
-             wself.lastBelowMean = belowMeancount;
+//                 float lowVal   = wself.lastMin + (lowPart*(1.0/wself.codecFrequenciesTable.count));
+//                 
+//                 //harsh
+////                 if(max<wself.lastMean){
+////                     belowMeancount++;
+////                 }
+////                 float lowPart  = wself.lastMean - wself.lastMin;
+////                 float lowVal   = wself.lastMin + (wself.lastBelowMean*(lowPart/wself.codecFrequenciesTable.count));
+//                 
+//                 float maxref=lowVal;
+//                 
+////                 printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
+//                 if(max> maxref){
+//                     BIT_SET(packet, i);
+//                      [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
+//                 }else{
+//                     BIT_CLEAR(packet, i);
+//                      [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
+//                 }
+//                 mean+=max;
+// 
+//             }
 //             mean=mean/wself.codecFrequenciesTable.count;
+//             wself.lastMean =mean;
+//             wself.lastMin  =min;
+//             wself.lastBelowMean = belowMeancount;
+             
+             
+             [self preprocessFrequency];
+             int packet = [self processFrequency];
+             
              
 //             [self //--fooorequencytable];
              
