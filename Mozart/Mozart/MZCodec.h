@@ -17,7 +17,7 @@ typedef void (^MZCodecDecoderDidReceiveLetter)(void);
 #define CODEC_32 32
 
 #define AMPLITUDE_ON_4S 6.0
-#define AMPLITUDE_ON_5  0.45
+#define AMPLITUDE_ON_5  6.0
 
 
 #define TEST_PATTERN_OFF    0
