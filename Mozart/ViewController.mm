@@ -196,6 +196,8 @@
     
     // SET THE DATA TO SEND
     [self.codec setEncoderDataString:self.outMessage];
+    
+    // USE THIS CODE INSTEAD TO SEND NUMBERS =)
 //    [self.codec setEncoderDataWithLong:(long)10];
     
     // IN  CASE OF NEEDED SETUP THE OVERRIDE OF TEST PATTERNS

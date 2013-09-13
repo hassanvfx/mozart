@@ -1160,13 +1160,17 @@
     if(bytes==nil){
         return;
     }
+    short refNum;
+    [bytes getBytes:&refNum length:2];
     
-    NSString *letterByte=[self bitStringContentFromData:bytes];
+//    NSString *letterByte=[self bitStringContentFromData:bytes];
     
-    NSString *key=[NSString stringWithFormat:@">%d-%@<",index,refMessage];
+    NSString *key=[NSString stringWithFormat:@">%d-%d-%@<",refNum, index,refMessage];
     NSString *refletter = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
     if(refletter==nil){
         refletter=@"  ";
+    }else{
+        key=[NSString stringWithFormat:@">%@-%d-%@<",refletter, index,refMessage];
     }
     
     NSMutableDictionary *part =[self.decoderPackets objectForKey:key];
