@@ -46,6 +46,7 @@
 @property(nonatomic,assign) CFAbsoluteTime          decoderEndTime;
 
 @property(nonatomic,strong) NSMutableDictionary     *decoderPackets;
+@property(nonatomic,strong) NSMutableDictionary     *decodedContents;
 @property(nonatomic,assign) long                    counter;
 
 @property(nonatomic,assign) float                   lastMean;
@@ -157,10 +158,10 @@
         
     self.parameters.MIN_FREQ            =   18500;
     self.parameters.MAX_FREQ            =   20300;
-    self.parameters.ENCODER_PACKET_REPEAT = 32; //very important !!
+    self.parameters.ENCODER_PACKET_REPEAT = 16; //very important !!
     self.parameters.ENCODER_AMPLITUDE_ON  = AMPLITUDE_ON_5; //4 ->iphone4s and //0.45->iphone5S
-    self.parameters.ENCODER_SHUFFLED_VERSIONS =4;
-    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =2;
+    self.parameters.ENCODER_SHUFFLED_VERSIONS = 8;
+    self.parameters.DECODER_OK_REPEAT_REQUIREMENT =4;
     self.parameters.DECODER_USE_MOVING_AVERAGE   =0.5;
     self.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE =0.95;
     
@@ -852,8 +853,9 @@
     self.decoderInvalids=0;
     
     self.decoderInitTime=CFAbsoluteTimeGetCurrent();
-    self.decoderEndTime=-1;
-     self.decoderPackets=[NSMutableDictionary new];
+    self.decoderEndTime  =-1;
+    self.decoderPackets  =[NSMutableDictionary new];
+    self.decodedContents =[NSMutableDictionary new];
     
     self.decoderDataByIndex=[NSDictionary new];
     self.decoderDecodingLength = 0;
@@ -940,7 +942,7 @@
         
         
         float lowPart  = wself.lastMean - wself.lastMin;
-        float thershold   = wself.lastMin + (lowPart/wself.lastBelowMean);
+        float thershold   = wself.lastMin + (lowPart/ (wself.lastBelowMean));
          
        
         if(peak>= thershold){
@@ -1014,82 +1016,11 @@
          {
              
              wself.hasNewFFTData = NO;
+            
              
              
-             
-//             float binWidth = wself.fftLength /((float) wself.parameters.SAMPLING_FREQUENCY/(float)2);
-//             float freqSearchWindow = wself.freqHop* wself.parameters.DECODER_HOP_TOLERANCE_PERCENTAGE;
-//
-//             int packet =0;
-//             double mean=0;
-//             double min=10000000;
-//             int belowMeancount =0;
-//             
-//             for( int i=0; i<wself.codecFrequenciesTable.count;i++){
-//                 
-//                 NSMutableDictionary *hint = [wself.codecFrequenciesTable objectAtIndex:i];
-//                 NSNumber *frequencyValue = [hint objectForKey:@"frequency"];
-//                 float lastMax =[[hint objectForKey:@"magnitude"]floatValue];
-//                 
-//                 int frequency = [frequencyValue intValue];
-//                 int freqWindowBeginsAt = frequency - (freqSearchWindow/2);
-//                 int freqWindowEndsAt   = frequency + (freqSearchWindow/2);
-//                 
-//                 int binStarts = binWidth*freqWindowBeginsAt;
-//                 int binEnds = binWidth*freqWindowEndsAt;
-//                 
-//                 float max =0;
-//                 
-//                 for (int i=binStarts; i<=binEnds; i++) {
-//                     
-//                     float magnitude =wself.fftData[i];
-//                     //                     max+=magnitude;
-//                     if(magnitude>max){
-//                         max=magnitude;
-//                     }
-//                     
-//                     if (magnitude<min) {
-//                         min=magnitude;
-//                     }
-//                 }
-//                 
-//                //--fooo("---------- max= %f\n",max);
-//                 
-////                 max = lastMax*wself.parameters.DECODER_USE_MOVING_AVERAGE + max*(1.0-wself.parameters.DECODER_USE_MOVING_AVERAGE);
-//                 [hint setObject:[NSNumber numberWithFloat:max] forKey:@"magnitude"];
-//                 
-//                 // hass
-//                 float lowPart  = wself.lastMean - wself.lastMin;
-//                 float lowVal   = wself.lastMin + (lowPart*(1.0/wself.codecFrequenciesTable.count));
-//                 
-//                 //harsh
-////                 if(max<wself.lastMean){
-////                     belowMeancount++;
-////                 }
-////                 float lowPart  = wself.lastMean - wself.lastMin;
-////                 float lowVal   = wself.lastMin + (wself.lastBelowMean*(lowPart/wself.codecFrequenciesTable.count));
-//                 
-//                 float maxref=lowVal;
-//                 
-////                 printf("%d \t %6.2f \t %6.2f \t %6.2f \t %6.2f\n", frequency, lowVal,wself.lastMean,max,lastMax);
-//                 if(max> maxref){
-//                     BIT_SET(packet, i);
-//                      [hint setObject:[NSNumber numberWithInt:0] forKey:@"value"];
-//                 }else{
-//                     BIT_CLEAR(packet, i);
-//                      [hint setObject:[NSNumber numberWithInt:1] forKey:@"value"];
-//                 }
-//                 mean+=max;
-// 
-//             }
-//             mean=mean/wself.codecFrequenciesTable.count;
-//             wself.lastMean =mean;
-//             wself.lastMin  =min;
-//             wself.lastBelowMean = belowMeancount;
-             
-             
-             [self preprocessFrequency];
-             int packet = [self processFrequency];
+             [wself preprocessFrequency];
+             int packet = [wself processFrequency];
              
              
 //             [self //--fooorequencytable];
@@ -1232,7 +1163,11 @@
        ){
  
         
-        [self didReceive:finalbytes part:index refMessage:refMessageBits refContent:refMessageBitsContent];
+        [self didReceive:finalbytes
+                    part:index
+              refMessage:refMessageBits
+              refContent:refMessageBitsContent
+                   valid:YES];
    
         
         //--fooo("VALID   idx %d idxChk %d onBits %d status %d msg %s\n",
@@ -1243,6 +1178,15 @@
 //               [letter UTF8String]);
         return messageBits;
     }else{
+        
+        [self didReceive:finalbytes
+                    part:index
+              refMessage:refMessageBits
+              refContent:refMessageBitsContent
+                   valid:NO];
+        
+
+        
         //--fooo("INVALID idx %d idxChk %d onBits %d status %d msg %s\n",
 //               index,
 //               indexInverted,
@@ -1259,7 +1203,7 @@
 
 
 
--(void)didReceive:(NSData*)bytes part:(int)index refMessage:(NSString*)refMessage refContent:(NSString*)refContent{
+-(void)didReceive:(NSData*)bytes part:(int)index refMessage:(NSString*)refMessage refContent:(NSString*)refContent valid:(Boolean)valid{
     
     if(bytes==nil){
         return;
@@ -1277,11 +1221,38 @@
         key=[NSString stringWithFormat:@">%@-%d-%@<",refletter, index,refMessage];
     }
     
+    
+    NSMutableDictionary *contentHint = [self.decodedContents objectForKey:refContent];
+    if(contentHint==nil){
+        
+        //first time
+        NSMutableDictionary *hint=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   [NSNumber numberWithInt:1],@"count",
+                                   refContent,@"refContent",
+                                   nil];
+        
+        [self.decodedContents setObject:hint forKey:refContent];
+    }else{
+        int count = [[contentHint objectForKey:@"count"]intValue];
+        count++;
+        NSMutableDictionary *hint=[NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                   [NSNumber numberWithInt:count],@"count",
+                                   refContent,@"refContent",
+                                   nil];
+        
+        [self.decodedContents setObject:hint forKey:refContent];
+        
+    }
+    
+    if (!valid) {
+        return;
+    }
+    
     NSMutableDictionary *part =[self.decoderPackets objectForKey:key];
     if(part==nil){
         //first time
         NSMutableDictionary *part=[NSMutableDictionary dictionaryWithObjectsAndKeys:
-                                   [NSNumber numberWithInt:0],@"count",
+                                   [NSNumber numberWithInt:1],@"count",
                                    [NSNumber numberWithInt:index],@"index",
                                    refletter,@"letter",
                                    bytes,@"bytes",
@@ -1302,17 +1273,7 @@
             return;
         }
         
-        
-        
-//        if(oldindex>=self.parameters.DECODER_OK_REPEAT_REQUIREMENT){
-//            return;
-//        }
-        if(oldindex==index){
-            ++count;
-        }else{
-            count=0;
-        }
-        
+         ++count;
         
         NSMutableDictionary *partnew=[NSMutableDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithInt:count],@"count",
@@ -1345,7 +1306,19 @@
         NSString *key =[allKeys objectAtIndex:i];
         NSMutableDictionary *part =[self.decoderPackets objectForKey:key];
         int count = [[part objectForKey:@"count"]intValue];
+      
+        ///// CHECK IF THE PACKET CONTENT HAS CAME BEFORE
+        ///// IF THE PACKET HAD CAME BEFORE, ADD THIS CONTRIBUTIONS TO THE FULL PACKET
+        NSString *refcontentkey = [part objectForKey:@"refContent"];
+        NSMutableDictionary *contentHint = [self.decodedContents objectForKey:refcontentkey];
+        if(contentHint!=nil){
+            int hintcount = [[contentHint objectForKey:@"count"]intValue];
+            count+=hintcount;
+            printf("%s hintcount = %d\n",[refcontentkey UTF8String],hintcount);
+        }
+        
         count=fmin(count, okPerPacket   );
+        
         if(count>=okPerPacket){
             [part setObject:@1 forKey:@"locked"];
             ok++;
@@ -1390,29 +1363,9 @@
 -(void)receivedPacketDone:(NSDictionary*)byIndex{
     
     
-    if(self.decoderEndTime==-1){
         NSLog(@"packet received");
         self.decoderDecodingLength = CFAbsoluteTimeGetCurrent()-self.decoderInitTime;
-        
-        
-//        NSArray *allKeys = [byIndex allKeys];
-//        NSMutableArray *containers =[NSMutableArray new];
-//        for (int i=0; i<self.packetDescriptor.maxPacketsNumber; i++) {
-//            [containers addObject:@""];
-//        }
-//        for (int i=0; i<byIndex.count; i++) {
-//            
-//            NSString *indexName = [allKeys objectAtIndex:i];
-//            NSMutableDictionary *part =[byIndex objectForKey:indexName];
-//            NSString *letter=[[part objectForKey:@"letterByte"]copy];
-//            
-//            int index = [[part objectForKey:@"index"]intValue];
-//            ]
-//            [containers replaceObjectAtIndex:index withObject:letter];
-//            
-//        }
-        
-        //         self.lastReceivedMessage = [NSString stringWithFormat:@"%@%@%@%@",b,d,a,c];
+    
       
         NSMutableArray *allObjects = [NSMutableArray arrayWithArray:[byIndex allValues]];
 
@@ -1459,8 +1412,7 @@
             self.decoderCallback();
         }
         [self stopDecoder];
-        
-    }
+   
 }
 
 
