@@ -1216,14 +1216,13 @@
     
 //    NSString *letterByte=[self bitStringContentFromData:bytes];
     
-    NSString *key=[NSString stringWithFormat:@">%d-%d-%@<",refNum, index,refMessage];
     NSString *refletter = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
     if(refletter==nil){
         refletter=@"  ";
     }else{
-        key=[NSString stringWithFormat:@">%@-%d-%@<",refletter, index,refMessage];
+        refletter=[NSString stringWithFormat:@"%d",refNum];
     }
-    
+    NSString * key=[NSString stringWithFormat:@">%@-%d-%@<",refletter, index,refMessage];
     
     NSMutableDictionary *contentHint = [self.decodedContents objectForKey:refContent];
     if(contentHint==nil){
