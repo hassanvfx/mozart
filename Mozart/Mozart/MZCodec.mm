@@ -1218,8 +1218,7 @@
     
     NSString *refletter = [[NSString alloc] initWithData:bytes encoding:NSUTF8StringEncoding];
     if(refletter==nil){
-        refletter=@"  ";
-    }else{
+        
         refletter=[NSString stringWithFormat:@"%d",refNum];
     }
     NSString * key=[NSString stringWithFormat:@">%@-%d-%@<",refletter, index,refMessage];
