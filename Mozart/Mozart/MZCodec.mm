@@ -2,8 +2,8 @@
 //  MZCodecHelper.m
 //  Novocaine
 //
-//  Created by hass on 9/10/13.
-//  Copyright (c) 2013 Datta Lab, Harvard University. All rights reserved.
+//  Created by Hassan Uriostegui on 9/10/13.
+//  Copyright (c) 2013.
 //
 
 #import "MZCodec.h"
@@ -355,7 +355,7 @@
                 float *waveBytes;
                 NSDictionary *packet =[packets objectAtIndex:i];
                 NSData *waveForm = [packet objectForKey:@"waveform"];
-                int partIndex = [[packet objectForKey:@"index"]intValue];
+//                int partIndex = [[packet objectForKey:@"index"]intValue];
 //                NSLog(@"appending partindex %d",partIndex);
                 
                 waveBytes = new float[self.parameters.ENCODER_WAVE_LENGHT];
@@ -443,12 +443,12 @@
     int partIndexNegBits                 = descriptor.partIndexNegBits;
     int partStatusBits                   = descriptor.partStatusBits;
     
-    int completePacketLenghtBytes       = descriptor.completePacketLenghtBytes;
-    int completePacketLenghtBits        = descriptor.completePacketLenghtBits;
+//    int completePacketLenghtBytes       = descriptor.completePacketLenghtBytes;
+//    int completePacketLenghtBits        = descriptor.completePacketLenghtBits;
     int maxPacketsNumber                = descriptor.maxPacketsNumber;
     
     int maxMessageBytes                 =descriptor.maxMessageBytes;
-    int maxMessageBits                  = descriptor.maxMessageBits;
+//    int maxMessageBits                  = descriptor.maxMessageBits;
     
     
     
@@ -1148,7 +1148,7 @@
     NSString *letter = [[NSString alloc]initWithUTF8String:messageBits];
     NSData *finalbytes = [NSData dataWithBytes:messageBits length:messageBitsLenght-1];
     
-    NSString *letterByte=[self bitStringContentFromData:finalbytes];
+//    NSString *letterByte=[self bitStringContentFromData:finalbytes];
     
     self.decoderLastLetter =[letter copy];
     
@@ -1265,7 +1265,7 @@
     }else{
         
 //        NSString *oldLetterBytes= [part objectForKey:@"letterByte"];
-        int oldindex = [[part objectForKey:@"index"]intValue];
+//        int oldindex = [[part objectForKey:@"index"]intValue];
         int count = [[part objectForKey:@"count"]intValue];
         
         if ([part objectForKey:@"locked"]) {

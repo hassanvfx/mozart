@@ -2,8 +2,8 @@
 //  main.m
 //  Novocaine
 //
-//  Created by Alex Wiltschko on 4/2/12.
-//  Copyright (c) 2012 Datta Lab, Harvard University. All rights reserved.
+//  Created by Hassan Uriostegui on 1/9/13.
+//  Copyright (c) 2013.
 //
 
 #import <UIKit/UIKit.h>

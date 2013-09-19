@@ -2,8 +2,8 @@
 //  MZCodecHelper.h
 //  Novocaine
 //
-//  Created by hass on 9/10/13.
-//  Copyright (c) 2013 Datta Lab, Harvard University. All rights reserved.
+//  Created by Hassan Uriostegui on 9/10/13.
+//  Copyright (c) 2013.
 //
 
 #import <Foundation/Foundation.h>

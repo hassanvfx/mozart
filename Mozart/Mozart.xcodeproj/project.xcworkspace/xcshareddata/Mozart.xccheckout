@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>D70F65A9-782C-4E74-B7DF-9EA625E9F836</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Mozart</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>F69C8B82-828D-430B-AD2A-17337898E350</key>
+		<string>ssh://github.com/hassanvfx/mozart.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Mozart/Mozart.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>F69C8B82-828D-430B-AD2A-17337898E350</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/hassanvfx/mozart.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>F69C8B82-828D-430B-AD2A-17337898E350</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>F69C8B82-828D-430B-AD2A-17337898E350</string>
+			<key>IDESourceControlWCCName</key>
+			<string>mozart</string>
+		</dict>
+	</array>
+</dict>
+</plist>
